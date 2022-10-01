@@ -8,6 +8,12 @@ const px0_500 = Array.from(Array(501))
     return { [b]: b, ...a };
   }, {});
 
+const px0_30 = Array.from(Array(31))
+  .map((_, i) => `${i}px`)
+  .reduce((a, b) => {
+    return { [b]: [b, { lineHeight: '1' }], ...a };
+  }, {});
+
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -43,7 +49,7 @@ module.exports = {
           800: '#1F2937',
           900: '#212121',
         },
-        yellow: colors.amber,
+        yellow: colors.yellow,
         green: colors.emerald,
         blue: colors.blue,
         indigo: colors.indigo,
@@ -166,6 +172,7 @@ module.exports = {
         DEFAULT: '1',
       },
       fontSize: {
+        ...px0_30,
         xs: ['0.75rem', { lineHeight: '1rem' }],
         sm: ['0.875rem', { lineHeight: '1.25rem' }],
         base: ['1rem', { lineHeight: '1.5rem' }],
