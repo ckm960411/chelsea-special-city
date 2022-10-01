@@ -13,7 +13,7 @@ interface MyAppProps extends AppProps {
 const MyApp = ({ Component, pageProps }: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return <div>{getLayout(<Component {...pageProps} />)}</div>;
+  return <div className="font-pretendard">{getLayout(<Component {...pageProps} />)}</div>;
 };
 
 export default MyApp;
