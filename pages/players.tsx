@@ -1,12 +1,12 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
 
-const Players = () => {
+const PlayersPage = () => {
   return <div className="px-16px">PLAYERS</div>;
 };
 
-export default Players;
+export default PlayersPage;
 
-Players.getLayout = function (page: React.ReactNode) {
+PlayersPage.getLayout = function (page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };

@@ -10,6 +10,7 @@ import { chelseaColor } from '../../utils/common/variables';
 enum PageName {
   HOME = '첼시특별시',
   PLAYERS = 'PLAYERS',
+  REGISTER = 'REGISTER',
 }
 interface Page {
   id: number;
@@ -27,6 +28,11 @@ const pages: Page[] = [
     id: 1,
     link: '/players',
     name: PageName.PLAYERS,
+  },
+  {
+    id: 999,
+    link: '/admin/register',
+    name: PageName.REGISTER,
   },
 ];
 
