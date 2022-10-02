@@ -1,13 +1,14 @@
 import { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import { ChelseaLogo } from '../common/ChelseaLogo';
-import BellIcon from '@heroicons/react/24/outline/BellIcon';
 import BurgurIcon from '@heroicons/react/24/outline/Bars3Icon';
 import Link from 'next/link';
 import { useBreakpoint } from '../../utils/hooks';
 import { chelseaColor } from '../../utils/common/variables';
+import NavbarProfileLogin from './components/NavbarProfile';
+import MobileNavbarDropdown from './components/MobileNavbarDropdown';
 
-enum PageName {
+export enum PageName {
   HOME = '첼시특별시',
   PLAYERS = 'PLAYERS',
   REGISTER = 'REGISTER',
@@ -18,7 +19,7 @@ interface Page {
   name: PageName;
 }
 
-const pages: Page[] = [
+export const pages: Page[] = [
   {
     id: 0,
     link: '/',
@@ -42,10 +43,10 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
   const isMobile = useBreakpoint();
 
   const [currentPage, setCurrentPage] = useState<PageName>(PageName.HOME);
-  const [isDrawerOpened, setIsDrawerOpened] = useState(false);
+  const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
   useEffect(() => {
-    if (!isMobile) setIsDrawerOpened(false);
+    if (!isMobile) setIsDropdownOpened(false);
   }, [isMobile]);
 
   return (
@@ -57,7 +58,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
               <>
                 <button className="p-4px">
                   <BurgurIcon
-                    onClick={() => setIsDrawerOpened((prev) => !prev)}
+                    onClick={() => setIsDropdownOpened((prev) => !prev)}
                     className="h-24px w-24px flex-shrink-0 text-gray-600 hover:text-chelsea"
                   />
                 </button>
@@ -105,47 +106,14 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
               </>
             )}
           </div>
-          <div className="flex items-center gap-8px pr-4px">
-            <button className="p-4px">
-              <BellIcon className="h-24px w-24px flex-shrink-0 text-gray-600 hover:text-chelsea" />
-            </button>
-            <div className="h-40px w-40px flex-shrink-0 cursor-pointer rounded-full border-2 border-yellow-300 bg-gray-200"></div>
-          </div>
+          <NavbarProfileLogin />
         </div>
-        {isMobile && isDrawerOpened && (
-          <div
-            className="absolute inset-x-0 top-full flex flex-col"
-            style={{ height: `calc(100vh - ${NAVBAR_HEIGHT}px)` }}
-          >
-            <div className="bottom-shadow flex-shrink-0 bg-white">
-              <hr />
-              <ul className="p-16px">
-                {pages.map((page) => {
-                  const isCurrent = page.name === currentPage;
-                  return (
-                    <li
-                      key={page.id}
-                      onClick={() => {
-                        setCurrentPage(page.name);
-                        setIsDrawerOpened(false);
-                      }}
-                      className={`cursor-pointer py-6px px-4px ${
-                        isCurrent ? 'text-chelsea' : 'text-gray-600'
-                      }`}
-                    >
-                      <Link href={page.link}>
-                        <a>{page.name}</a>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            <div
-              onClick={() => setIsDrawerOpened(false)}
-              className="h-full flex-grow bg-littleblack"
-            ></div>
-          </div>
+        {isMobile && isDropdownOpened && (
+          <MobileNavbarDropdown
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            setIsDropdownOpened={setIsDropdownOpened}
+          />
         )}
       </nav>
       <main className="max-w-1024 pt-10px">{children}</main>
