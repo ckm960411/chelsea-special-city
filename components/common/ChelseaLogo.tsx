@@ -6,7 +6,10 @@ const src =
 interface ChelseaLogoProps {
   className?: string;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
-export const ChelseaLogo = ({ className, style }: ChelseaLogoProps) => {
-  return <img src={src} alt="CHELSEA CHAMPION" className={className} style={style} />;
+export const ChelseaLogo = ({ className, style, onClick }: ChelseaLogoProps) => {
+  return (
+    <img onClick={onClick} src={src} alt="CHELSEA CHAMPION" className={className} style={style} />
+  );
 };
