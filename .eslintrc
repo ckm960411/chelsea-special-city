@@ -7,7 +7,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "prettier/prettier": ["warn", { "endOfLine": "auto" }],
+    "prettier/prettier": ["warn"],
     "@typescript-eslint/ban-ts-comment": "warn",
     "Delete `·`": "off",
     "object-curly-newline": ["off"],
