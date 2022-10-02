@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChelseaLogo } from '../common/ChelseaLogo';
 import BellIcon from '@heroicons/react/24/outline/BellIcon';
 import BurgurIcon from '@heroicons/react/24/outline/Bars3Icon';
@@ -7,7 +7,10 @@ import Link from 'next/link';
 import { useBreakpoint } from '../../utils/hooks';
 import { chelseaColor } from '../../utils/common/variables';
 
-type PageName = '첼시특별시' | 'PLAYERS';
+enum PageName {
+  HOME = '첼시특별시',
+  PLAYERS = 'PLAYERS',
+}
 interface Page {
   id: number;
   link: string;
@@ -18,24 +21,30 @@ const pages: Page[] = [
   {
     id: 0,
     link: '/',
-    name: '첼시특별시',
+    name: PageName.HOME,
   },
   {
     id: 1,
     link: '/players',
-    name: 'PLAYERS',
+    name: PageName.PLAYERS,
   },
 ];
+
+export const NAVBAR_HEIGHT = 64;
 
 const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
   const isMobile = useBreakpoint();
 
-  const [currentPage, setCurrentPage] = useState<PageName>('첼시특별시');
+  const [currentPage, setCurrentPage] = useState<PageName>(PageName.HOME);
   const [isDrawerOpened, setIsDrawerOpened] = useState(false);
+
+  useEffect(() => {
+    if (!isMobile) setIsDrawerOpened(false);
+  }, [isMobile]);
 
   return (
     <>
-      <nav className="bottom-shadow relative h-64px" style={{ zIndex: 1000 }}>
+      <nav className="bottom-shadow relative" style={{ height: NAVBAR_HEIGHT, zIndex: 1000 }}>
         <div className="max-w-1024 relative flex h-full items-center justify-between px-12px">
           <div className="flex h-full items-center gap-16px">
             {isMobile ? (
@@ -49,7 +58,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
                 <Link href="/">
                   <a>
                     <ChelseaLogo
-                      onClick={() => setCurrentPage('첼시특별시')}
+                      onClick={() => setCurrentPage(PageName.HOME)}
                       className="absolute top-1/2 left-1/2 h-48px w-48px cursor-pointer"
                       style={{ transform: 'translate(-50%, -50%)' }}
                     />
@@ -61,7 +70,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
                 <Link href="/">
                   <a>
                     <ChelseaLogo
-                      onClick={() => setCurrentPage('첼시특별시')}
+                      onClick={() => setCurrentPage(PageName.HOME)}
                       className="h-48px w-48px cursor-pointer"
                     />
                   </a>
@@ -98,29 +107,38 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
         {isMobile && isDrawerOpened && (
-          <div className="bottom-shadow absolute inset-x-0 top-full bg-white">
-            <hr />
-            <ul className="p-16px">
-              {pages.map((page) => {
-                const isCurrent = page.name === currentPage;
-                return (
-                  <li
-                    key={page.id}
-                    onClick={() => {
-                      setCurrentPage(page.name);
-                      setIsDrawerOpened(false);
-                    }}
-                    className={`cursor-pointer py-6px px-4px ${
-                      isCurrent ? 'text-chelsea' : 'text-gray-600'
-                    }`}
-                  >
-                    <Link href={page.link}>
-                      <a>{page.name}</a>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+          <div
+            className="absolute inset-x-0 top-full flex flex-col"
+            style={{ height: `calc(100vh - ${NAVBAR_HEIGHT}px)` }}
+          >
+            <div className="bottom-shadow flex-shrink-0 bg-white">
+              <hr />
+              <ul className="p-16px">
+                {pages.map((page) => {
+                  const isCurrent = page.name === currentPage;
+                  return (
+                    <li
+                      key={page.id}
+                      onClick={() => {
+                        setCurrentPage(page.name);
+                        setIsDrawerOpened(false);
+                      }}
+                      className={`cursor-pointer py-6px px-4px ${
+                        isCurrent ? 'text-chelsea' : 'text-gray-600'
+                      }`}
+                    >
+                      <Link href={page.link}>
+                        <a>{page.name}</a>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div
+              onClick={() => setIsDrawerOpened(false)}
+              className="h-full flex-grow bg-littleblack"
+            ></div>
           </div>
         )}
       </nav>
