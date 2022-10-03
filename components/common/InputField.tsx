@@ -19,7 +19,7 @@ const InputField = (props: InputFieldProps) => {
       <input
         {...attributes}
         className={`w-full rounded-sm border px-12px py-6px outline-none ${
-          errorSign?.isOpen ? 'border-red-500' : 'border-gray-500 hover:border-chelsea'
+          errorSign?.isOpen ? 'border-red-500' : 'border-gray-400 focus:border-chelsea'
         } ${className}`}
       />
       {errorSign?.isOpen && (
