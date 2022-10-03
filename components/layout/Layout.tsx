@@ -1,8 +1,9 @@
-import { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
-import { ChelseaLogo } from '../common/ChelseaLogo';
-import BurgurIcon from '@heroicons/react/24/outline/Bars3Icon';
+import { NextPage } from 'next';
 import Link from 'next/link';
+import BurgurIcon from '@heroicons/react/24/outline/Bars3Icon';
+
+import { ChelseaLogo } from '../common/ChelseaLogo';
 import { useBreakpoint } from '../../utils/hooks';
 import { chelseaColor } from '../../utils/common/variables';
 import NavbarProfileLogin from './components/NavbarProfile';

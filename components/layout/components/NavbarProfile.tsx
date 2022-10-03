@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import { useBreakpoint } from '../../../utils/hooks';
-import BellIcon from '@heroicons/react/24/outline/BellIcon';
-import UserIcon from '@heroicons/react/24/outline/UserCircleIcon';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
+import BellIcon from '@heroicons/react/24/outline/BellIcon';
+import UserIcon from '@heroicons/react/24/outline/UserCircleIcon';
+
+import { meState, tokenState } from '../../../store';
+import { useBreakpoint } from '../../../utils/hooks';
 
 const NavbarProfileLogin = () => {
   const isMobile = useBreakpoint();
   const router = useRouter();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const me = useRecoilValue(meState);
+  const token = useRecoilValue(tokenState);
 
   return (
     <>
       {isMobile ? (
         <button
           onClick={() => {
-            if (isLoggedIn) return; // router.push('/profile');
+            if (me && token) return; // router.push('/profile');
             else router.push('/auth/login');
           }}
           className="p-4px text-gray-600 hover:text-chelsea"
@@ -25,7 +27,7 @@ const NavbarProfileLogin = () => {
         </button>
       ) : (
         <>
-          {isLoggedIn ? (
+          {me && token ? (
             <div className="flex items-center gap-8px pr-4px">
               <button className="p-4px text-gray-600 hover:text-chelsea">
                 <Link href="/profile">
