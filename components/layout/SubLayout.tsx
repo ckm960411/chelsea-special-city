@@ -25,7 +25,9 @@ const SubLayout: NextPage<SubLayoutProps> = ({ title, children }) => {
           </h1>
         </div>
       </div>
-      <div className="flex-center mx-auto h-full max-w-md flex-col">{children}</div>
+      <div className="h-full overflow-y-auto">
+        <div className="mx-auto max-w-md flex-col">{children}</div>
+      </div>
     </div>
   );
 };
