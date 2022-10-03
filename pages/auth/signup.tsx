@@ -1,7 +1,9 @@
+import { omit } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { signUp } from '../../api/user';
 import { ChelseaLogo } from '../../components/common/ChelseaLogo';
 import InputField from '../../components/common/InputField';
 import SpaceY from '../../components/common/SpaceY';
@@ -105,11 +107,15 @@ const SignupPage = () => {
     return true;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (onValidate() === undefined) return;
-    console.log(
-      `name: ${name} / email: ${email} / password: ${password} / confirmPassword: ${confirmPassword}`,
-    );
+    try {
+      await signUp(omit(signupForm, 'confirmPassword'));
+      alert('회원가입에 성공했습니다. 로그인 페이지로 이동합니다.');
+      router.push('/auth/login');
+    } catch (error) {
+      return;
+    }
   };
 
   useEffect(() => {
