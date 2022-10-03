@@ -1,4 +1,5 @@
 import { atom, AtomEffect } from 'recoil';
+import { v1 } from 'uuid';
 
 const localStorageEffect =
   (key: string): AtomEffect<string | null> =>
@@ -13,13 +14,13 @@ const localStorageEffect =
     });
   };
 
-export const meState = atom({
-  key: 'me',
+export const meState = atom<any>({
+  key: `me/${v1()}`,
   default: undefined,
 });
 
 export const tokenState = atom<string | null>({
-  key: 'token',
+  key: `me/${v1()}`,
   default: null,
   effects_UNSTABLE: [localStorageEffect('token')],
 });
