@@ -1,9 +1,12 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { ChelseaLogo } from '../../components/common/ChelseaLogo';
 import InputField from '../../components/common/InputField';
 import SpaceY from '../../components/common/SpaceY';
 import SubLayout from '../../components/layout/SubLayout';
+import { meState, tokenState } from '../../store';
 import { EmailRegex } from '../../utils/common/regex-utils';
 import { useBreakpoint } from '../../utils/hooks';
 
@@ -29,7 +32,11 @@ interface SignupForm {
 }
 
 const SignupPage = () => {
+  const router = useRouter();
   const isMobile = useBreakpoint();
+
+  const me = useRecoilValue(meState);
+  const token = useRecoilValue(tokenState);
 
   const [signupForm, setSignupForm] = useState<SignupForm>({
     username: '',
@@ -104,6 +111,10 @@ const SignupPage = () => {
       `name: ${name} / email: ${email} / password: ${password} / confirmPassword: ${confirmPassword}`,
     );
   };
+
+  useEffect(() => {
+    if (me && token) router.push('/');
+  }, [me, token, router]);
 
   return (
     <div className="w-full px-32px text-center">

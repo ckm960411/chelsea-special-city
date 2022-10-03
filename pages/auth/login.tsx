@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { ChelseaLogo } from '../../components/common/ChelseaLogo';
@@ -8,7 +8,7 @@ import InputField from '../../components/common/InputField';
 import { useBreakpoint } from '../../utils/hooks';
 import { EmailRegex } from '../../utils/common/regex-utils';
 import { login } from '../../api/user';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { meState, tokenState } from '../../store';
 import { useRouter } from 'next/router';
 
@@ -27,8 +27,8 @@ const LoginPage = () => {
   const { EMPTY_EMAIL, INCORRECT_EMAIL_FORMAT, EMPTY_PASSWORD, PASSWORD_LENGTH } = LoginErrorType;
   const isMobile = useBreakpoint();
   const router = useRouter();
-  const setMe = useSetRecoilState(meState);
-  const setToken = useSetRecoilState(tokenState);
+  const [me, setMe] = useRecoilState(meState);
+  const [token, setToken] = useRecoilState(tokenState);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -73,6 +73,10 @@ const LoginPage = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    if (me && token) router.push('/');
+  }, [me, token, router]);
 
   return (
     <div className="w-full px-32px text-center">
