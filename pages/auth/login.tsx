@@ -8,6 +8,9 @@ import InputField from '../../components/common/InputField';
 import { useBreakpoint } from '../../utils/hooks';
 import { EmailRegex } from '../../utils/common/regex-utils';
 import { login } from '../../api/user';
+import { useSetRecoilState } from 'recoil';
+import { meState, tokenState } from '../../store';
+import { useRouter } from 'next/router';
 
 enum LoginErrorType {
   EMPTY_EMAIL,
@@ -23,6 +26,9 @@ interface LoginError {
 const LoginPage = () => {
   const { EMPTY_EMAIL, INCORRECT_EMAIL_FORMAT, EMPTY_PASSWORD, PASSWORD_LENGTH } = LoginErrorType;
   const isMobile = useBreakpoint();
+  const router = useRouter();
+  const setMe = useSetRecoilState(meState);
+  const setToken = useSetRecoilState(tokenState);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,8 +65,10 @@ const LoginPage = () => {
     if (onValidate() === undefined) return;
     try {
       const response = await login({ email, password });
-      const { data } = response.data;
-      localStorage.setItem('token', data.token);
+      const { data } = await response.data;
+      setMe(data);
+      setToken(data.token);
+      router.push('/');
     } catch (error) {
       return;
     }
