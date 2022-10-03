@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { NextPage } from 'next';
 import { ReactElement, ReactNode } from 'react';
 import { RecoilRoot } from 'recoil';
+import MeProvider from '../components/common/MeProvider';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -16,7 +17,9 @@ const MyApp = ({ Component, pageProps }: MyAppProps) => {
 
   return (
     <RecoilRoot>
-      <div className="font-pretendard">{getLayout(<Component {...pageProps} />)}</div>
+      <MeProvider>
+        <div className="font-pretendard">{getLayout(<Component {...pageProps} />)}</div>
+      </MeProvider>
     </RecoilRoot>
   );
 };
