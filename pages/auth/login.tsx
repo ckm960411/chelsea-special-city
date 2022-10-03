@@ -7,6 +7,7 @@ import SubLayout from '../../components/layout/SubLayout';
 import InputField from '../../components/common/InputField';
 import { useBreakpoint } from '../../utils/hooks';
 import { EmailRegex } from '../../utils/common/regex-utils';
+import { login } from '../../api/user';
 
 enum LoginErrorType {
   EMPTY_EMAIL,
@@ -20,8 +21,8 @@ interface LoginError {
 }
 
 const LoginPage = () => {
-  const isMobile = useBreakpoint();
   const { EMPTY_EMAIL, INCORRECT_EMAIL_FORMAT, EMPTY_PASSWORD, PASSWORD_LENGTH } = LoginErrorType;
+  const isMobile = useBreakpoint();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,9 +55,15 @@ const LoginPage = () => {
     return true;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (onValidate() === undefined) return;
-    console.log(`email: ${email} / password: ${password}`);
+    try {
+      const response = await login({ email, password });
+      const { data } = response.data;
+      localStorage.setItem('token', data.token);
+    } catch (error) {
+      return;
+    }
   };
 
   return (
