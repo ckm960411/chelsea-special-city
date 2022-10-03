@@ -17,7 +17,7 @@ const NavbarProfileLogin = () => {
         <button
           onClick={() => {
             if (isLoggedIn) return; // router.push('/profile');
-            else router.push('/login');
+            else router.push('/auth/login');
           }}
           className="p-4px text-gray-600 hover:text-chelsea"
         >
@@ -38,7 +38,7 @@ const NavbarProfileLogin = () => {
             </div>
           ) : (
             <button className="pr-4px text-18px font-semibold text-gray-600 hover:text-chelsea">
-              <Link href="/login">
+              <Link href="/auth/login">
                 <a>LOGIN</a>
               </Link>
             </button>

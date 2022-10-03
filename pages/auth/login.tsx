@@ -3,13 +3,16 @@ import React from 'react';
 import { ChelseaLogo } from '../../components/common/ChelseaLogo';
 import SpaceY from '../../components/common/SpaceY';
 import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
+import { useRouter } from 'next/router';
 
 const LoginPage = () => {
+  const router = useRouter();
+
   return (
     <div className="relative h-screen bg-gray-0">
       <div className="bottom-shadow absolute inset-x-0 top-0 bg-white py-8px px-16px">
         <div className="mx-auto flex h-full max-w-md items-center">
-          <button className="p-4px">
+          <button onClick={() => router.back()} className="p-4px">
             <ArrowLeftIcon className="h-24px w-24px" />
           </button>
           <h1
