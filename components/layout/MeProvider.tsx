@@ -12,7 +12,7 @@ const MeProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(null);
     });
     if (result && result.status === 200 && result?.data) {
-      setMe(result.data);
+      setMe(result.data.data);
     } else {
       setToken(null);
     }

@@ -8,13 +8,17 @@ import { useBreakpoint } from '../../utils/hooks';
 import { chelseaColor } from '../../utils/common/variables';
 import NavbarProfileLogin from './components/NavbarProfile';
 import MobileNavbarDropdown from './components/MobileNavbarDropdown';
+import { useRecoilValue } from 'recoil';
+import { meState } from '../../store';
+import { UserStatus } from '../../utils/type/user';
+import { useRouter } from 'next/router';
 
 export enum PageName {
   HOME = '첼시특별시',
   PLAYERS = 'PLAYERS',
   REGISTER = 'REGISTER',
 }
-interface Page {
+export interface Page {
   id: number;
   link: string;
   name: PageName;
@@ -31,20 +35,31 @@ export const pages: Page[] = [
     link: '/players',
     name: PageName.PLAYERS,
   },
-  {
-    id: 999,
-    link: '/admin/register',
-    name: PageName.REGISTER,
-  },
 ];
+const registerPage = {
+  id: 999,
+  link: '/admin/register',
+  name: PageName.REGISTER,
+};
 
 export const NAVBAR_HEIGHT = 64;
 
 const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
   const isMobile = useBreakpoint();
+  const router = useRouter();
+  const me = useRecoilValue(meState) as any;
 
-  const [currentPage, setCurrentPage] = useState<PageName>(PageName.HOME);
+  const [currentPage, setCurrentPage] = useState<PageName>();
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
+
+  const navigations = me?.userStatus === UserStatus.ADMIN ? [...pages, registerPage] : pages;
+
+  useEffect(() => {
+    const { route } = router;
+    if (route === '/') setCurrentPage(PageName.HOME);
+    if (route === '/players') setCurrentPage(PageName.PLAYERS);
+    if (route === '/admin/register') setCurrentPage(PageName.REGISTER);
+  }, [router]);
 
   useEffect(() => {
     if (!isMobile) setIsDropdownOpened(false);
@@ -83,7 +98,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
                     />
                   </a>
                 </Link>
-                {pages.map((page) => {
+                {navigations.map((page) => {
                   const isCurrent = page.name === currentPage;
                   return (
                     <Link key={page.id} href={page.link}>
@@ -111,6 +126,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         {isMobile && isDropdownOpened && (
           <MobileNavbarDropdown
+            navigations={navigations}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             setIsDropdownOpened={setIsDropdownOpened}

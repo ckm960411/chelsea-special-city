@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { Dispatch, SetStateAction } from 'react';
-import { NAVBAR_HEIGHT, PageName, pages } from '../Layout';
+import { NAVBAR_HEIGHT, Page, PageName } from '../Layout';
 
 interface MobileNavbarDropdownProps {
-  currentPage: PageName;
-  setCurrentPage: Dispatch<SetStateAction<PageName>>;
+  navigations: Page[];
+  currentPage: PageName | undefined;
+  setCurrentPage: Dispatch<SetStateAction<PageName | undefined>>;
   setIsDropdownOpened: Dispatch<SetStateAction<boolean>>;
 }
 const MobileNavbarDropdown = ({
+  navigations,
   currentPage,
   setCurrentPage,
   setIsDropdownOpened,
@@ -20,7 +22,7 @@ const MobileNavbarDropdown = ({
       <div className="bottom-shadow flex-shrink-0 bg-white">
         <hr />
         <ul className="p-16px">
-          {pages.map((page) => {
+          {navigations.map((page) => {
             const isCurrent = page.name === currentPage;
             return (
               <li
