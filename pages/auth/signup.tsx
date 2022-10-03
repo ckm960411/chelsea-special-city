@@ -1,13 +1,109 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { ChelseaLogo } from '../../components/common/ChelseaLogo';
 import InputField from '../../components/common/InputField';
 import SpaceY from '../../components/common/SpaceY';
 import SubLayout from '../../components/layout/SubLayout';
+import { EmailRegex } from '../../utils/common/regex-utils';
 import { useBreakpoint } from '../../utils/hooks';
+
+enum SignupErrorType {
+  NAME_LENGTH,
+  EMPTY_EMAIL,
+  INCORRECT_EMAIL_FORMAT,
+  EMPTY_PASSWORD,
+  PASSWORD_LENGTH,
+  EMPTY_CONFIRM_PASSWORD,
+  CONFIRM_PASSWORD_LENGTH,
+  INCORRECT_PASSWORD,
+}
+interface SignupError {
+  type: SignupErrorType;
+  message: string;
+}
+interface SignupForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignupPage = () => {
   const isMobile = useBreakpoint();
+
+  const [signupForm, setSignupForm] = useState<SignupForm>({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [errorMessage, setErrorMessage] = useState<SignupError | null>(null);
+
+  const { username, email, password, confirmPassword } = signupForm;
+  const {
+    NAME_LENGTH,
+    EMPTY_EMAIL,
+    INCORRECT_EMAIL_FORMAT,
+    EMPTY_PASSWORD,
+    PASSWORD_LENGTH,
+    EMPTY_CONFIRM_PASSWORD,
+    CONFIRM_PASSWORD_LENGTH,
+    INCORRECT_PASSWORD,
+  } = SignupErrorType;
+
+  const onValidate = () => {
+    if (username.length < 2) {
+      return setErrorMessage({
+        type: NAME_LENGTH,
+        message: '이름을 2자 이상 입력해주세요!',
+      });
+    } else if (email.length === 0) {
+      return setErrorMessage({
+        type: EMPTY_EMAIL,
+        message: '이메일을 입력해주세요!',
+      });
+    } else if (!EmailRegex.test(email)) {
+      return setErrorMessage({
+        type: INCORRECT_EMAIL_FORMAT,
+        message: '이메일 형식이 맞지 않습니다!',
+      });
+    } else if (password.length === 0) {
+      return setErrorMessage({
+        type: EMPTY_PASSWORD,
+        message: '비밀번호를 입력해주세요!',
+      });
+    } else if (password.length < 6) {
+      return setErrorMessage({
+        type: PASSWORD_LENGTH,
+        message: '비밀번호를 6자 이상 입력해주세요!',
+      });
+    } else if (confirmPassword.length === 0) {
+      return setErrorMessage({
+        type: EMPTY_CONFIRM_PASSWORD,
+        message: '비밀번호를 입력해주세요!',
+      });
+    } else if (confirmPassword.length < 6) {
+      return setErrorMessage({
+        type: CONFIRM_PASSWORD_LENGTH,
+        message: '비밀번호를 6자 이상 입력해주세요!',
+      });
+    } else if (password !== confirmPassword) {
+      return setErrorMessage({
+        type: INCORRECT_PASSWORD,
+        message: '비밀번호가 일치하지 않습니다!',
+      });
+    }
+
+    setErrorMessage(null);
+    return true;
+  };
+
+  const handleSubmit = () => {
+    if (onValidate() === undefined) return;
+    console.log(
+      `name: ${name} / email: ${email} / password: ${password} / confirmPassword: ${confirmPassword}`,
+    );
+  };
 
   return (
     <div className="w-full px-32px text-center">
@@ -16,15 +112,81 @@ const SignupPage = () => {
       <SpaceY height="20px" />
       <h1 className="text-20px font-bold text-chelsea">Join Us</h1>
       <SpaceY height="24px" />
-      <InputField label="Name" />
+      <InputField
+        label="Name"
+        value={username}
+        onChange={(e) => {
+          setSignupForm((prev) => ({
+            ...prev,
+            username: e.target.value,
+          }));
+        }}
+        errorSign={{
+          isOpen: errorMessage?.type === NAME_LENGTH && username.length < 2,
+          message: errorMessage?.message ?? '',
+        }}
+      />
       <SpaceY height="8px" />
-      <InputField label="Email" type="email" />
+      <InputField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => {
+          setSignupForm((prev) => ({
+            ...prev,
+            email: e.target.value,
+          }));
+        }}
+        errorSign={{
+          isOpen:
+            (errorMessage?.type === EMPTY_EMAIL || errorMessage?.type === INCORRECT_EMAIL_FORMAT) &&
+            !EmailRegex.test(email),
+          message: errorMessage?.message ?? '',
+        }}
+      />
       <SpaceY height="8px" />
-      <InputField label="Password" type="password" />
+      <InputField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => {
+          setSignupForm((prev) => ({
+            ...prev,
+            password: e.target.value,
+          }));
+        }}
+        errorSign={{
+          isOpen:
+            (errorMessage?.type === EMPTY_PASSWORD || errorMessage?.type === PASSWORD_LENGTH) &&
+            password.length < 6,
+          message: errorMessage?.message ?? '',
+        }}
+      />
       <SpaceY height="8px" />
-      <InputField label="Confirm Password" type="password" />
+      <InputField
+        label="Confirm Password"
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => {
+          setSignupForm((prev) => ({
+            ...prev,
+            confirmPassword: e.target.value,
+          }));
+        }}
+        errorSign={{
+          isOpen:
+            ((errorMessage?.type === EMPTY_CONFIRM_PASSWORD ||
+              errorMessage?.type === CONFIRM_PASSWORD_LENGTH) &&
+              confirmPassword.length < 6) ||
+            (errorMessage?.type === INCORRECT_PASSWORD && password !== confirmPassword),
+          message: errorMessage?.message ?? '',
+        }}
+      />
       <SpaceY height="24px" />
-      <button className="w-full rounded-sm bg-chelsea py-12px text-18px font-bold text-white">
+      <button
+        onClick={handleSubmit}
+        className="w-full rounded-sm bg-chelsea py-12px text-18px font-bold text-white"
+      >
         회원가입
       </button>
       <SpaceY height="16px" />
