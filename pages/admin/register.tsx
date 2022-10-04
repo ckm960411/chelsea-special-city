@@ -8,6 +8,7 @@ import Layout from '../../components/layout/Layout';
 import { meState, tokenState } from '../../store';
 import { UserStatus } from '../../utils/type/user';
 import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
+import { Position } from '../../utils/type/player';
 
 const anonymousImg =
   'https://ik.imagekit.io/chelseaSpecialCity/anonymous_ob3_9uGhM.png?ik-sdk-version=javascript-1.4.3&updatedAt=1664801528839';
@@ -19,6 +20,11 @@ const RegisterPlayerPage = () => {
 
   const [photo, setPhoto] = useState<string>();
   const [photoFile, setPhotoFile] = useState<FileList | null>(null);
+  const [position, setPosition] = useState<Position | null>(null);
+
+  const [isSelectOpened, setIsSelectOpened] = useState(false);
+
+  const positions = Object.values(Position);
 
   const uploadPhoto = async () => {
     if (photoFile) {
@@ -70,16 +76,43 @@ const RegisterPlayerPage = () => {
       <InputField label="BACKNUMBER" />
       <SpaceY height="16px" />
       <label className="mb-8px text-16px font-normal text-gray-800">POSITION</label>
-      <div className="flex h-38px w-full cursor-pointer items-center justify-between rounded-sm border border-gray-400 bg-white px-12px">
-        <span className="text-14px text-gray-400">SELECT POSITION</span>
-        <button className="p-4px">
-          <ChevronDown className="w-16px" />
-        </button>
+      <div className="relative">
+        <div
+          onClick={() => setIsSelectOpened((prev) => !prev)}
+          className="flex h-38px w-full cursor-pointer items-center justify-between border border-gray-400 bg-white px-12px"
+          style={{ borderRadius: isSelectOpened ? '0.125rem 0.125rem 0 0' : '0.125rem' }}
+        >
+          <span className={`text-14px ${position ? 'text-chelsea' : 'text-gray-400'}`}>
+            {position ?? 'SELECT POSITION'}
+          </span>
+          <button className="p-4px">
+            <ChevronDown className="w-16px" />
+          </button>
+        </div>
+        {isSelectOpened && (
+          <div
+            className="absolute inset-x-0 top-full z-10 h-100px w-full overflow-auto border border-t-0 border-gray-400 bg-white p-8px"
+            style={{ borderRadius: '0px 0px 0.125rem 0.125rem' }}
+          >
+            {positions.map((position) => (
+              <li
+                key={position}
+                onClick={(e) => {
+                  setPosition((e.target as HTMLLIElement).textContent as Position);
+                  setIsSelectOpened(false);
+                }}
+                className="cursor-pointer py-4px text-16px"
+              >
+                {position.toUpperCase()}
+              </li>
+            ))}
+          </div>
+        )}
       </div>
       <SpaceY height="16px" />
       <InputField label="NATIONAL TEAM" />
       <SpaceY height="16px" />
-      <InputField label="PLACE OF BIRTH" />
+      <InputField label="BIRTH PLACE" />
       <SpaceY height="16px" />
       <InputField label="BIRTH DATE" />
       <SpaceY height="16px" />

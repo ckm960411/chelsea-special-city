@@ -9,6 +9,10 @@ body {
   background-color: #f9fafb;
 }
 
+li {
+  list-style: none;
+}
+
 .max-w-1024 {
   max-width: 1024px;
   margin-left: auto;
