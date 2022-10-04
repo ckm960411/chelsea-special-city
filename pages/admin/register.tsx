@@ -8,17 +8,14 @@ import Layout from '../../components/layout/Layout';
 import { meState, tokenState } from '../../store';
 import { UserStatus } from '../../utils/type/user';
 import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
+import { Position } from '../../utils/type/player';
 import {
-  DefenderPosition,
-  ForwardPosition,
-  MidfielderPosition,
-  Position,
-} from '../../utils/type/player';
-import { checkWhiteIcon } from '../../utils/common/variables';
-
-const forwardPositions: string[] = Object.values(ForwardPosition);
-const midfielderPositions: string[] = Object.values(MidfielderPosition);
-const defenderPositions: string[] = Object.values(DefenderPosition);
+  checkWhiteIcon,
+  defenderPositions,
+  forwardPositions,
+  midfielderPositions,
+  positions,
+} from '../../utils/common/variables';
 
 const anonymousImg =
   'https://ik.imagekit.io/chelseaSpecialCity/anonymous_ob3_9uGhM.png?ik-sdk-version=javascript-1.4.3&updatedAt=1664801528839';
@@ -28,7 +25,6 @@ const RegisterPlayerPage = () => {
   const me = useRecoilValue(meState);
   const token = useRecoilValue(tokenState);
 
-  const positions = Object.values(Position);
   const allDetailPositions = {
     forward: forwardPositions,
     midfielder: midfielderPositions,
