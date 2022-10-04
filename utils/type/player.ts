@@ -37,6 +37,7 @@ export enum DefenderPosition {
 }
 
 export interface RegisterForm {
+  profileImg: string;
   name: string;
   backNumber: number | null;
   position: Position | null;

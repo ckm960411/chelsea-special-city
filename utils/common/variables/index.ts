@@ -4,6 +4,7 @@ import { DefenderPosition, ForwardPosition, MidfielderPosition, Position } from 
 export const chelseaColor = '#001489';
 
 export const checkWhiteIcon = `${imagekitUrlEnpoint}/icon/check-white_fesAY1vBb.svg`;
+export const anonymousImg = `${imagekitUrlEnpoint}/anonymous_ob3_9uGhM.png`;
 
 export const positions = Object.values(Position);
 export const forwardPositions: string[] = Object.values(ForwardPosition);
