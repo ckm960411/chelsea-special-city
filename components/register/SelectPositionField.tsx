@@ -4,6 +4,7 @@ import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
 import { Position, RegisterForm } from '../../utils/type/player';
 import { positions } from '../../utils/common/variables';
 import { useClickOutside } from '../../utils/hooks';
+import ToggleProvider from '../common/ToggleProvider';
 
 interface SelectPositionFieldProps {
   registerForm: RegisterForm;
@@ -30,9 +31,13 @@ const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFi
             <ChevronDown className="w-16px" />
           </button>
         </div>
-        {isSelectOpened && (
+        <ToggleProvider
+          duration="200ms"
+          showing={isSelectOpened}
+          containerClass="absolute top-full inxet-x-0 z-10 w-full"
+        >
           <div
-            className="absolute inset-x-0 top-full z-10 h-100px w-full overflow-auto border border-t-0 border-gray-400 bg-white p-8px"
+            className="h-100px w-full overflow-auto border border-t-0 border-gray-400 bg-white p-8px"
             style={{ borderRadius: '0px 0px 0.125rem 0.125rem' }}
           >
             {positions.map((position) => (
@@ -45,13 +50,13 @@ const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFi
                   }));
                   setIsSelectOpened(false);
                 }}
-                className="cursor-pointer py-6px text-14px text-gray-700 hover:text-chelsea"
+                className="cursor-pointer py-6px text-14px text-gray-700 hover:font-semibold hover:text-chelsea"
               >
                 {position.toUpperCase()}
               </li>
             ))}
           </div>
-        )}
+        </ToggleProvider>
       </div>
     </div>
   );
