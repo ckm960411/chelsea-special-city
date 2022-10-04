@@ -8,7 +8,7 @@ import Layout from '../../components/layout/Layout';
 import { meState, tokenState } from '../../store';
 import { UserStatus } from '../../utils/type/user';
 import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
-import { Position } from '../../utils/type/player';
+import { Position, RegisterForm } from '../../utils/type/player';
 import {
   checkWhiteIcon,
   defenderPositions,
@@ -16,6 +16,7 @@ import {
   midfielderPositions,
   positions,
 } from '../../utils/common/variables';
+import { cloneDeep } from 'lodash';
 
 const anonymousImg =
   'https://ik.imagekit.io/chelseaSpecialCity/anonymous_ob3_9uGhM.png?ik-sdk-version=javascript-1.4.3&updatedAt=1664801528839';
@@ -34,10 +35,20 @@ const RegisterPlayerPage = () => {
 
   const [photo, setPhoto] = useState<string>();
   const [photoFile, setPhotoFile] = useState<FileList | null>(null);
-  const [position, setPosition] = useState<Position | null>(null);
   const [detailPositions, setDetailPositions] = useState<string[]>([]);
 
   const [isSelectOpened, setIsSelectOpened] = useState(false);
+
+  const [registerForm, setRegisterForm] = useState<RegisterForm>({
+    name: '',
+    backNumber: null,
+    position: null,
+    detailPosition: [],
+    nationalTeam: '',
+    birthPlace: '',
+    birthDate: '',
+    height: 0,
+  });
 
   const uploadPhoto = async () => {
     if (photoFile) {
@@ -52,13 +63,16 @@ const RegisterPlayerPage = () => {
   };
 
   const handleTogglePosition = (position: string) => () => {
-    setDetailPositions((prev) => {
-      if (prev.includes(position)) {
-        return prev.filter((p) => p !== position);
-      } else {
-        return [...prev, position];
-      }
-    });
+    const copied = cloneDeep(registerForm);
+    if (copied.detailPosition.includes(position)) {
+      copied.detailPosition = copied.detailPosition.filter((p) => p !== position);
+    } else {
+      copied.detailPosition.push(position);
+    }
+    setRegisterForm((prev) => ({
+      ...prev,
+      detailPosition: copied.detailPosition,
+    }));
   };
 
   const handleSubmit = () => {};
@@ -108,8 +122,8 @@ const RegisterPlayerPage = () => {
           className="flex h-38px w-full cursor-pointer items-center justify-between border border-gray-400 bg-white px-12px"
           style={{ borderRadius: isSelectOpened ? '0.125rem 0.125rem 0 0' : '0.125rem' }}
         >
-          <span className={`text-14px ${position ? 'text-chelsea' : 'text-gray-400'}`}>
-            {position ?? 'SELECT POSITION'}
+          <span className={`text-14px ${registerForm.position ? 'text-chelsea' : 'text-gray-400'}`}>
+            {registerForm.position ?? 'SELECT POSITION'}
           </span>
           <button className="p-4px">
             <ChevronDown className="w-16px" />
@@ -124,7 +138,10 @@ const RegisterPlayerPage = () => {
               <li
                 key={position}
                 onClick={(e) => {
-                  setPosition((e.target as HTMLLIElement).textContent as Position);
+                  setRegisterForm((prev) => ({
+                    ...prev,
+                    position: (e.target as HTMLLIElement).textContent as Position,
+                  }));
                   setIsSelectOpened(false);
                 }}
                 className="cursor-pointer py-6px text-16px"
@@ -147,7 +164,7 @@ const RegisterPlayerPage = () => {
             <hr />
             <div className="grid grid-cols-5 gap-4px">
               {positions.map((position) => {
-                const isIncluded = detailPositions.includes(position);
+                const isIncluded = registerForm.detailPosition.includes(position);
                 return (
                   <div key={position} className="flex items-center gap-6px">
                     <button

@@ -35,3 +35,14 @@ export enum DefenderPosition {
   RB = 'RB',
   RWB = 'RWB',
 }
+
+export interface RegisterForm {
+  name: string;
+  backNumber: number | null;
+  position: Position | null;
+  detailPosition: string[];
+  nationalTeam: string;
+  birthPlace: string;
+  birthDate: string;
+  height: number;
+}
