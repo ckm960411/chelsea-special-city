@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, LegacyRef, SetStateAction, useState } from 'react';
 import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
 
 import { Position, RegisterForm } from '../../utils/type/player';
 import { positions } from '../../utils/common/variables';
+import { useClickOutside } from '../../utils/hooks';
 
 interface SelectPositionFieldProps {
   registerForm: RegisterForm;
@@ -11,10 +12,12 @@ interface SelectPositionFieldProps {
 const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFieldProps) => {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
 
+  const selectRef = useClickOutside(() => setIsSelectOpened(false));
+
   return (
     <div>
       <label className="mb-8px text-16px font-normal text-gray-800">POSITION</label>
-      <div className="relative">
+      <div ref={selectRef as LegacyRef<HTMLDivElement>} className="relative">
         <div
           onClick={() => setIsSelectOpened((prev) => !prev)}
           className="flex h-38px w-full cursor-pointer items-center justify-between border border-gray-400 bg-white px-12px"

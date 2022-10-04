@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 export const useBreakpoint = (breakpoint?: number) => {
@@ -32,3 +32,42 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   };
   return [storedValue, setValue] as const;
 }
+
+export const useClickOutside = (onClick: () => void, condition = true) => {
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (!condition) return;
+      if (ref.current?.contains(e.target as Node)) {
+        return;
+      }
+      onClick();
+    };
+    window.addEventListener('click', handleOutsideClick);
+
+    return () => window.removeEventListener('click', handleOutsideClick);
+  }, [onClick, condition]);
+
+  return ref;
+};
+
+/**
+ * @param condition ref element 를 보일 조건
+ * containerHeight 는 ref 를 감싸는 부모요소에 주어야 한다
+ */
+export const useToggleShowing = (condition: boolean) => {
+  const [containerHeight, setContainerHeight] = useState(0);
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const refHeight = ref.current?.clientHeight;
+    if (condition) {
+      refHeight && setContainerHeight(refHeight);
+    } else {
+      setContainerHeight(0);
+    }
+  }, [condition]);
+
+  return { ref, containerHeight, setContainerHeight };
+};
