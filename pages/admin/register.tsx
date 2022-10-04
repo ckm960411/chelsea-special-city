@@ -8,7 +8,17 @@ import Layout from '../../components/layout/Layout';
 import { meState, tokenState } from '../../store';
 import { UserStatus } from '../../utils/type/user';
 import ChevronDown from '@heroicons/react/24/outline/ChevronDownIcon';
-import { Position } from '../../utils/type/player';
+import {
+  DefenderPosition,
+  ForwardPosition,
+  MidfielderPosition,
+  Position,
+} from '../../utils/type/player';
+import { checkWhiteIcon } from '../../utils/common/variables';
+
+const forwardPositions: string[] = Object.values(ForwardPosition);
+const midfielderPositions: string[] = Object.values(MidfielderPosition);
+const defenderPositions: string[] = Object.values(DefenderPosition);
 
 const anonymousImg =
   'https://ik.imagekit.io/chelseaSpecialCity/anonymous_ob3_9uGhM.png?ik-sdk-version=javascript-1.4.3&updatedAt=1664801528839';
@@ -18,22 +28,41 @@ const RegisterPlayerPage = () => {
   const me = useRecoilValue(meState);
   const token = useRecoilValue(tokenState);
 
+  const positions = Object.values(Position);
+  const allDetailPositions = {
+    forward: forwardPositions,
+    midfielder: midfielderPositions,
+    defender: defenderPositions,
+    goalkeeper: ['GK'],
+  };
+
   const [photo, setPhoto] = useState<string>();
   const [photoFile, setPhotoFile] = useState<FileList | null>(null);
   const [position, setPosition] = useState<Position | null>(null);
+  const [detailPositions, setDetailPositions] = useState<string[]>([]);
 
   const [isSelectOpened, setIsSelectOpened] = useState(false);
 
-  const positions = Object.values(Position);
-
   const uploadPhoto = async () => {
     if (photoFile) {
-      const response = await uploadPlayerPhoto(photoFile).catch((e) => console.log(e));
+      const response = await uploadPlayerPhoto(photoFile).catch(() => {
+        return;
+      });
       if (response?.data?.success) {
         const images = response?.data?.data;
         setPhoto(images[0]);
       }
     }
+  };
+
+  const handleTogglePosition = (position: string) => () => {
+    setDetailPositions((prev) => {
+      if (prev.includes(position)) {
+        return prev.filter((p) => p !== position);
+      } else {
+        return [...prev, position];
+      }
+    });
   };
 
   const handleSubmit = () => {};
@@ -48,6 +77,7 @@ const RegisterPlayerPage = () => {
 
   useEffect(() => {
     uploadPhoto();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [photoFile]);
 
   return (
@@ -101,13 +131,44 @@ const RegisterPlayerPage = () => {
                   setPosition((e.target as HTMLLIElement).textContent as Position);
                   setIsSelectOpened(false);
                 }}
-                className="cursor-pointer py-4px text-16px"
+                className="cursor-pointer py-6px text-16px"
               >
                 {position.toUpperCase()}
               </li>
             ))}
           </div>
         )}
+      </div>
+      <SpaceY height="16px" />
+      <label className="mb-8px text-16px font-normal text-gray-800">DETAIL POSITION</label>
+      <SpaceY height="6px" />
+      <div className="flex flex-col gap-14px bg-white p-8px">
+        {Object.values(allDetailPositions).map((positions, i) => (
+          <div key={i} className="flex flex-col gap-6px">
+            <h6 className="text-12px text-gray-700">
+              {Object.keys(allDetailPositions)[i].toUpperCase()}
+            </h6>
+            <hr />
+            <div className="grid grid-cols-5 gap-4px">
+              {positions.map((position) => {
+                const isIncluded = detailPositions.includes(position);
+                return (
+                  <div key={position} className="flex items-center gap-6px">
+                    <button
+                      onClick={handleTogglePosition(position)}
+                      className={`flex h-24px w-24px items-center justify-center rounded-sm border border-gray-100 text-gray-700 ${
+                        isIncluded ? 'bg-chelsea' : 'bg-gray-200'
+                      }`}
+                    >
+                      <img src={checkWhiteIcon} alt="check" />
+                    </button>
+                    <span className="text-14px text-gray-700">{position}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
       <SpaceY height="16px" />
       <InputField label="NATIONAL TEAM" />
