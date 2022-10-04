@@ -42,7 +42,7 @@ const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFi
                   }));
                   setIsSelectOpened(false);
                 }}
-                className="cursor-pointer py-6px text-16px"
+                className="cursor-pointer py-6px text-14px text-gray-700 hover:text-chelsea"
               >
                 {position.toUpperCase()}
               </li>
