@@ -16,25 +16,44 @@ import PlayerNationalTeamField from '../../components/register/PlayerNationalTea
 import PlayerBirthPlaceField from '../../components/register/PlayerBirthPlaceField';
 import PlayerBirthDateField from '../../components/register/PlayerBirthDateField';
 import PlayerHeightField from '../../components/register/PlayerHeightField';
+import { registerPlayer } from '../../api/players';
+
+const initialRegisterForm = {
+  profileImg: '',
+  name: '',
+  backNumber: null,
+  position: null,
+  detailPosition: [],
+  nationalTeam: '',
+  birthPlace: '',
+  birthDate: '',
+  height: 0,
+};
 
 const RegisterPlayerPage = () => {
   const router = useRouter();
   const me = useRecoilValue(meState);
   const token = useRecoilValue(tokenState);
 
-  const [registerForm, setRegisterForm] = useState<RegisterForm>({
-    profileImg: '',
-    name: '',
-    backNumber: null,
-    position: null,
-    detailPosition: [],
-    nationalTeam: '',
-    birthPlace: '',
-    birthDate: '',
-    height: 0,
-  });
+  const [registerForm, setRegisterForm] = useState<RegisterForm>(initialRegisterForm);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    const { backNumber, position, ...rest } = registerForm;
+    if (backNumber && position) {
+      await registerPlayer({
+        backNumber,
+        position,
+        ...rest,
+      })
+        .then(() => {
+          alert('선수 등록이 완료됐습니다!');
+          setRegisterForm(initialRegisterForm);
+        })
+        .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+    } else {
+      alert('빠진 입력란이 없는지 확인해주세요!');
+    }
+  };
 
   useEffect(() => {
     if (!token) {
