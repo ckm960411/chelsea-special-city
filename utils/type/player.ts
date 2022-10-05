@@ -12,6 +12,10 @@ export interface DetailPosition {
   goalkeeper: ['GK'];
 }
 
+export type FWPosition = 'ST' | 'CF' | 'LW' | 'RW';
+export type MFPosition = 'CAM' | 'CM' | 'CDM' | 'LM' | 'RM';
+export type DFPosition = 'CB' | 'SW' | 'LB' | 'LWB' | 'RB' | 'RWB';
+
 export enum ForwardPosition {
   ST = 'ST',
   CF = 'CF',
