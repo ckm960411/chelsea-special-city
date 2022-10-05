@@ -1,5 +1,6 @@
 import { forEach } from 'lodash';
 import { post } from '../axios';
+import { RegisterPlayerDto } from './dto/register-player.dto';
 
 export const uploadPlayerPhoto = (files: FileList) => {
   const formFile = new FormData();
@@ -10,4 +11,8 @@ export const uploadPlayerPhoto = (files: FileList) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+};
+
+export const registerPlayer = (data: RegisterPlayerDto) => {
+  return post('players/create', data);
 };
