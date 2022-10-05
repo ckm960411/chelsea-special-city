@@ -6,11 +6,11 @@ import { positions } from '../../utils/common/variables';
 import { useClickOutside } from '../../utils/hooks';
 import ToggleProvider from '../common/ToggleProvider';
 
-interface SelectPositionFieldProps {
+interface PlayerPositionFieldProps {
   registerForm: RegisterForm;
   setRegisterForm: Dispatch<SetStateAction<RegisterForm>>;
 }
-const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFieldProps) => {
+const PlayerPositionField = ({ registerForm, setRegisterForm }: PlayerPositionFieldProps) => {
   const [isSelectOpened, setIsSelectOpened] = useState(false);
 
   const selectRef = useClickOutside(() => setIsSelectOpened(false));
@@ -62,4 +62,4 @@ const SelectPositionField = ({ registerForm, setRegisterForm }: SelectPositionFi
   );
 };
 
-export default SelectPositionField;
+export default PlayerPositionField;

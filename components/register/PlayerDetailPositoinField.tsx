@@ -17,14 +17,14 @@ const allDetailPositions = {
   goalkeeper: ['GK'],
 };
 
-interface ChooseDetailPositoinFieldProps {
+interface PlayerDetailPositoinFieldProps {
   registerForm: RegisterForm;
   setRegisterForm: Dispatch<SetStateAction<RegisterForm>>;
 }
-const ChooseDetailPositoinField = ({
+const PlayerDetailPositoinField = ({
   registerForm,
   setRegisterForm,
-}: ChooseDetailPositoinFieldProps) => {
+}: PlayerDetailPositoinFieldProps) => {
   const handleTogglePosition = (position: string) => () => {
     const copied = cloneDeep(registerForm);
     if (copied.detailPosition.includes(position)) {
@@ -74,4 +74,4 @@ const ChooseDetailPositoinField = ({
   );
 };
 
-export default ChooseDetailPositoinField;
+export default PlayerDetailPositoinField;

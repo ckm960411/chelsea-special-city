@@ -6,11 +6,11 @@ import { RegisterForm } from '../../utils/type/player';
 import InputField from '../common/InputField';
 import SpaceY from '../common/SpaceY';
 
-interface UploadPlayerPhotoFieldProps {
+interface PlayerPhotoFieldProps {
   registerForm: RegisterForm;
   setRegisterForm: Dispatch<SetStateAction<RegisterForm>>;
 }
-const UploadPlayerPhotoField = ({ registerForm, setRegisterForm }: UploadPlayerPhotoFieldProps) => {
+const PlayerPhotoField = ({ registerForm, setRegisterForm }: PlayerPhotoFieldProps) => {
   const [photoFile, setPhotoFile] = useState<FileList | null>(null);
 
   const uploadPhoto = async () => {
@@ -59,4 +59,4 @@ const UploadPlayerPhotoField = ({ registerForm, setRegisterForm }: UploadPlayerP
   );
 };
 
-export default UploadPlayerPhotoField;
+export default PlayerPhotoField;
