@@ -1,5 +1,5 @@
 import { forEach } from 'lodash';
-import { post } from '../axios';
+import { get, post } from '../axios';
 import { RegisterPlayerDto } from './dto/register-player.dto';
 
 export const uploadPlayerPhoto = (files: FileList) => {
@@ -15,4 +15,8 @@ export const uploadPlayerPhoto = (files: FileList) => {
 
 export const registerPlayer = (data: RegisterPlayerDto) => {
   return post('players/create', data);
+};
+
+export const getAllPlayers = () => {
+  return get('players');
 };

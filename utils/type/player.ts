@@ -1,8 +1,8 @@
 export enum Position {
-  GOALKEEPER = 'goalkeeper',
-  DEFENDER = 'defender',
-  MIDFIELDER = 'midfielder',
-  FORWARD = 'forward',
+  GOALKEEPER = 'GOALKEEPER',
+  DEFENDER = 'DEFENDER',
+  MIDFIELDER = 'MIDFIELDER',
+  FORWARD = 'FORWARD',
 }
 
 export interface DetailPosition {
@@ -45,6 +45,19 @@ export interface RegisterForm {
   name: string;
   backNumber: number | null;
   position: Position | null;
+  detailPosition: string[];
+  nationalTeam: string;
+  birthPlace: string;
+  birthDate: string;
+  height: number;
+}
+
+export interface Player {
+  id: number;
+  name: string;
+  profileImg: string;
+  backNumber: number;
+  position: Position;
   detailPosition: string[];
   nationalTeam: string;
   birthPlace: string;
