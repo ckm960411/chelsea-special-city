@@ -20,3 +20,7 @@ export const registerPlayer = (data: RegisterPlayerDto) => {
 export const getAllPlayers = () => {
   return get('players');
 };
+
+export const getPlayer = (name: string) => {
+  return get(`players/${name}`);
+};
