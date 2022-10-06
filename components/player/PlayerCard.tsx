@@ -2,12 +2,14 @@ import { Player } from '../../utils/type/player';
 
 interface PlayerCardProps {
   player: Player;
+  onClick: () => void;
 }
-const PlayerCard = ({ player }: PlayerCardProps) => {
+const PlayerCard = ({ player, onClick }: PlayerCardProps) => {
   const [firstName, lastName] = player.name.split(' ');
 
   return (
     <div
+      onClick={onClick}
       className="relative flex cursor-pointer flex-col overflow-hidden rounded-sm border border-chelsea-300 bg-chelsea-0"
       style={{ boxShadow: '12px 12px 40px 0px rgba(0, 0, 0, 0.08)' }}
     >

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { getAllPlayers } from '../../api/players';
 import SpaceY from '../../components/common/SpaceY';
@@ -6,6 +7,8 @@ import PlayerCard from '../../components/player/PlayerCard';
 import { Player, Position } from '../../utils/type/player';
 
 const PlayersPage = () => {
+  const router = useRouter();
+
   const [players, setPlayers] = useState<Player[]>([]);
 
   const goalkeepers = players
@@ -24,6 +27,10 @@ const PlayersPage = () => {
     .filter((player) => player.position === Position.FORWARD)
     .sort((a, b) => a.backNumber - b.backNumber);
 
+  const handleClickPlayer = (playerName: string) => () => {
+    router.push(`/players/${playerName}`);
+  };
+
   useEffect(() => {
     getAllPlayers()
       .then((res) => {
@@ -39,33 +46,45 @@ const PlayersPage = () => {
       <h1 className="text-16px font-bold text-chelsea sm:text-22px">GOALKEEPER</h1>
       <hr className="my-16px" />
       <div className="grid grid-cols-2 gap-12px sm:grid-cols-4 sm:gap-18px">
-        {goalkeepers.map((player) => (
-          <PlayerCard key={player.id} player={player} />
-        ))}
+        {goalkeepers.map((player) => {
+          const playerName = player.name.split(' ').join('_');
+          return (
+            <PlayerCard key={player.id} player={player} onClick={handleClickPlayer(playerName)} />
+          );
+        })}
       </div>
       <SpaceY height="32px" />
       <h1 className="text-16px font-bold text-chelsea sm:text-22px">DEFENDER</h1>
       <hr className="my-16px" />
       <div className="grid grid-cols-2 gap-12px sm:grid-cols-4 sm:gap-18px">
-        {defenders.map((player) => (
-          <PlayerCard key={player.id} player={player} />
-        ))}
+        {defenders.map((player) => {
+          const playerName = player.name.split(' ').join('_');
+          return (
+            <PlayerCard key={player.id} player={player} onClick={handleClickPlayer(playerName)} />
+          );
+        })}
       </div>
       <SpaceY height="32px" />
       <h1 className="text-16px font-bold text-chelsea sm:text-22px">MIDFIELDER</h1>
       <hr className="my-16px" />
       <div className="grid grid-cols-2 gap-12px sm:grid-cols-4 sm:gap-18px">
-        {midfielders.map((player) => (
-          <PlayerCard key={player.id} player={player} />
-        ))}
+        {midfielders.map((player) => {
+          const playerName = player.name.split(' ').join('_');
+          return (
+            <PlayerCard key={player.id} player={player} onClick={handleClickPlayer(playerName)} />
+          );
+        })}
       </div>
       <SpaceY height="32px" />
       <h1 className="text-16px font-bold text-chelsea sm:text-22px">FORWARD</h1>
       <hr className="my-16px" />
       <div className="grid grid-cols-2 gap-12px sm:grid-cols-4 sm:gap-18px">
-        {fprwards.map((player) => (
-          <PlayerCard key={player.id} player={player} />
-        ))}
+        {fprwards.map((player) => {
+          const playerName = player.name.split(' ').join('_');
+          return (
+            <PlayerCard key={player.id} player={player} onClick={handleClickPlayer(playerName)} />
+          );
+        })}
       </div>
       <SpaceY height="40px" />
     </div>
