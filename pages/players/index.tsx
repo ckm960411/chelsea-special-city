@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPlayers } from '../api/players';
-import SpaceY from '../components/common/SpaceY';
-import Layout from '../components/layout/Layout';
-import PlayerCard from '../components/player/PlayerCard';
-import { Player, Position } from '../utils/type/player';
+import { getAllPlayers } from '../../api/players';
+import SpaceY from '../../components/common/SpaceY';
+import Layout from '../../components/layout/Layout';
+import PlayerCard from '../../components/player/PlayerCard';
+import { Player, Position } from '../../utils/type/player';
 
 const PlayersPage = () => {
   const [players, setPlayers] = useState<Player[]>([]);
