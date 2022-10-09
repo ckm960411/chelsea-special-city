@@ -27,7 +27,7 @@ const PlayersPage = () => {
   }, []);
 
   return (
-    <div className="max-w-screen-lg px-16px">
+    <div className="max-w-1024 px-16px">
       <SpaceY height="24px" />
       <div className="flex flex-col gap-36px sm:gap-48px">
         {positions.map((position, i) => {

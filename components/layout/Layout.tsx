@@ -136,7 +136,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
           />
         )}
       </nav>
-      <main className="max-w-1024 pt-10px">{children}</main>
+      <main>{children}</main>
     </>
   );
 };
