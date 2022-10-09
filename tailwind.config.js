@@ -8,7 +8,7 @@ const px0_500 = Array.from(Array(501))
     return { [b]: b, ...a };
   }, {});
 
-const px0_30 = Array.from(Array(31))
+const px0_100 = Array.from(Array(101))
   .map((_, i) => `${i}px`)
   .reduce((a, b) => {
     return { [b]: [b, { lineHeight: '1' }], ...a };
@@ -41,8 +41,9 @@ module.exports = {
           600: '#0024fa',
           700: '#1229b3',
           800: '#0e1d73',
-          900: '#050d3b',
+          900: '#140a47',
         },
+        chelseaYellow: '#fbb700',
         transparent: 'transparent',
         current: 'currentColor',
         black: colors.black,
@@ -184,7 +185,7 @@ module.exports = {
         DEFAULT: '1',
       },
       fontSize: {
-        ...px0_30,
+        ...px0_100,
         xs: ['0.75rem', { lineHeight: '1rem' }],
         sm: ['0.875rem', { lineHeight: '1.25rem' }],
         base: ['1rem', { lineHeight: '1.5rem' }],
@@ -450,11 +451,13 @@ module.exports = {
         ...negative(theme('spacing')),
       }),
       maxHeight: (theme) => ({
+        ...px0_500,
         ...theme('spacing'),
         full: '100%',
         screen: '100vh',
       }),
       maxWidth: (theme, { breakpoints }) => ({
+        ...px0_500,
         none: 'none',
         0: '0rem',
         xs: '20rem',
