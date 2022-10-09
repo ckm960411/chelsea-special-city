@@ -68,7 +68,7 @@ const Layout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <nav
-        className="bottom-shadow relative bg-white"
+        className="bottom-shadow sticky inset-x-0 top-0 bg-white"
         style={{ height: NAVBAR_HEIGHT, zIndex: 1000 }}
       >
         <div className="max-w-1024 relative flex h-full items-center justify-between px-12px">

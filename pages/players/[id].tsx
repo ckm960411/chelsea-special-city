@@ -20,7 +20,9 @@ const PlayerDetailPage = () => {
         .catch(() => {});
   }, [playerName]);
 
-  return <div>PlayerDetailPage</div>;
+  if (!player) return <div>Loading...</div>;
+
+  return <div className="px-16px">{player.name}</div>;
 };
 
 export default PlayerDetailPage;
