@@ -1,7 +1,11 @@
+import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { BottomSheet } from 'react-spring-bottom-sheet';
 import { getPlayer } from '../../api/players';
 import Layout from '../../components/layout/Layout';
+import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomSheet';
+import PlayerProfileImg from '../../components/player/PlayerProfileImg';
 import { Player } from '../../utils/type/player';
 
 const PlayerDetailPage = () => {
@@ -22,7 +26,12 @@ const PlayerDetailPage = () => {
 
   if (!player) return <div>Loading...</div>;
 
-  return <div className="px-16px">{player.name}</div>;
+  return (
+    <div className="bg-white">
+      <PlayerProfileImg player={player} />
+      <PlayerDetailBottomSheet player={player} />
+    </div>
+  );
 };
 
 export default PlayerDetailPage;

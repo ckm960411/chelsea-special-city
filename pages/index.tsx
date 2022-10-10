@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/layout/Layout';
 
 const Home = () => {
-  return <div className="px-16px">첼시특별시</div>;
+  return <div className="px-16px">HOME</div>;
 };
 
 Home.getLayout = function (page: React.ReactNode) {

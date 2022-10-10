@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 export const useBreakpoint = (breakpoint?: number) => {
@@ -70,4 +70,39 @@ export const useToggleShowing = (condition: boolean) => {
   }, [condition]);
 
   return { ref, containerHeight, setContainerHeight };
+};
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+export const useWindowSize = (): WindowSize => {
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: 0,
+    height: 0,
+  });
+
+  const handleSize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleSize);
+
+    return () => window.removeEventListener('resize', handleSize);
+  }, []);
+
+  // Set size at the first client-side load
+  useIsomorphicLayoutEffect(() => {
+    handleSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return windowSize;
 };
