@@ -1,5 +1,5 @@
 const PlayerDetailGallery = () => {
-  return <div className="bg-orange-200">PlayerDetailGallery</div>;
+  return <div className="h-full">PlayerDetailGallery</div>;
 };
 
 export default PlayerDetailGallery;

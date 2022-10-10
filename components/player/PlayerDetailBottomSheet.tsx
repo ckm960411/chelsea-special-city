@@ -17,11 +17,12 @@ interface PlayerDetailBottomSheetProps {
   player: Player;
 }
 const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
-  const { width } = useWindowSize();
+  const { width, height } = useWindowSize();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [startX, setStartX] = useState(0);
   const [endX, setEndX] = useState(0);
+  const [remainHeight, setRemainHeight] = useState(0);
 
   const onTouchStart = (e: React.TouchEvent) => {
     // 터치 시작시 터치한 좌표 기억
@@ -60,30 +61,33 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
       }}
       blocking={false}
     >
-      <div className="flex items-center justify-between px-20px ">
-        <PlayerSeperatedName playerName={player.name} className="text-chelsea" />
-        <div className="text-24px font-bold text-chelsea">No.{player.backNumber}</div>
-      </div>
-      <SpaceY height="16px" />
-      <PlayerDetailTabMenu
-        activeIndex={activeIndex}
-        setActiveIndex={setActiveIndex}
-        onScroll={() => {}}
-      />
-      <div
-        className="grid flex-grow grid-cols-3 duration-300"
-        style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
-      >
-        {tabs.map((comp, i) => (
-          <div
-            key={i}
-            className="w-full flex-shrink-0"
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-          >
-            {activeIndex === i && comp}
-          </div>
-        ))}
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between px-20px ">
+          <PlayerSeperatedName playerName={player.name} className="text-chelsea" />
+          <div className="text-24px font-bold text-chelsea">No.{player.backNumber}</div>
+        </div>
+        <SpaceY height="16px" />
+        <PlayerDetailTabMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        <div
+          ref={(ref) => {
+            const rectY = ref?.getBoundingClientRect().y;
+            if (rectY && height - rectY > 0) setRemainHeight(height - rectY);
+          }}
+          className="grid grid-cols-3 duration-300"
+          style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
+        >
+          {tabs.map((tab, i) => (
+            <div
+              key={i}
+              className="w-full flex-shrink-0"
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+              style={{ minHeight: remainHeight }}
+            >
+              {activeIndex === i && tab}
+            </div>
+          ))}
+        </div>
       </div>
     </BottomSheet>
   );

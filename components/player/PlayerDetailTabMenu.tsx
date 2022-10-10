@@ -3,16 +3,10 @@ import { Dispatch, SetStateAction } from 'react';
 interface PlayerDetailTabMenuProps {
   activeIndex: number;
   setActiveIndex: Dispatch<SetStateAction<number>>;
-  onScroll?: () => void;
 }
-const PlayerDetailTabMenu = ({
-  activeIndex,
-  setActiveIndex,
-  onScroll,
-}: PlayerDetailTabMenuProps) => {
+const PlayerDetailTabMenu = ({ activeIndex, setActiveIndex }: PlayerDetailTabMenuProps) => {
   const handleClick = (index: number) => () => {
     setActiveIndex(index);
-    onScroll?.();
   };
 
   return (

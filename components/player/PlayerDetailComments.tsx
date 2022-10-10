@@ -1,5 +1,5 @@
 const PlayerDetailComments = () => {
-  return <div className="h-full bg-chelsea-200">PlayerDetailComments</div>;
+  return <div className="h-full">PlayerDetailComments</div>;
 };
 
 export default PlayerDetailComments;
