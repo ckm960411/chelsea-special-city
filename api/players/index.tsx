@@ -24,3 +24,7 @@ export const getAllPlayers = () => {
 export const getPlayer = (name: string) => {
   return get(`players/${name}`);
 };
+
+export const getPlayerComments = (name: string) => {
+  return get(`comments/${name}`);
+};
