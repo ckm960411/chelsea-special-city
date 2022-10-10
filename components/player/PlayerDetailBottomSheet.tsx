@@ -82,7 +82,7 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
               className="w-full flex-shrink-0"
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
-              style={{ minHeight: remainHeight }}
+              style={{ minHeight: remainHeight ?? 1 }}
             >
               {activeIndex === i && tab}
             </div>

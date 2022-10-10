@@ -1,7 +1,5 @@
-import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { BottomSheet } from 'react-spring-bottom-sheet';
 import { getPlayer } from '../../api/players';
 import Layout from '../../components/layout/Layout';
 import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomSheet';

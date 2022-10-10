@@ -27,9 +27,7 @@ const PlayerDetailTabMenu = ({ activeIndex, setActiveIndex }: PlayerDetailTabMen
       <div className="h-2px w-full bg-gray-100">
         <div
           className="h-full w-1/3 bg-chelsea duration-300"
-          style={{
-            transform: `translateX(${activeIndex * 100}%)`,
-          }}
+          style={{ transform: `translateX(${activeIndex * 100}%)` }}
         />
       </div>
     </div>
