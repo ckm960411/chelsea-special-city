@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export enum Position {
   GOALKEEPER = 'GOALKEEPER',
   DEFENDER = 'DEFENDER',
@@ -63,4 +65,13 @@ export interface Player {
   birthPlace: string;
   birthDate: string;
   height: number;
+}
+
+export interface PlayerComment {
+  id: number;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+  user: User;
 }
