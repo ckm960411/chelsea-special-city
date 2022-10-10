@@ -7,6 +7,8 @@ import PlayerSeperatedName from '../common/PlayerSeperatedName';
 import SpaceY from '../common/SpaceY';
 import { NAVBAR_HEIGHT } from '../layout/Layout';
 import PlayerDetailAbout from './PlayerDetailAbout';
+import PlayerDetailComments from './PlayerDetailComments';
+import PlayerDetailGallery from './PlayerDetailGallery';
 import PlayerDetailTabMenu from './PlayerDetailTabMenu';
 
 interface PlayerDetailBottomSheetProps {
@@ -43,8 +45,8 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
         <div className="w-full flex-shrink-0">
           {activeIndex === 0 && <PlayerDetailAbout player={player} />}
         </div>
-        <div className="w-full flex-shrink-0">{activeIndex === 1 && <div>PlayerComment</div>}</div>
-        <div className="w-full flex-shrink-0">{activeIndex === 2 && <div>PlayerGallery</div>}</div>
+        <div className="w-full flex-shrink-0">{activeIndex === 1 && <PlayerDetailComments />}</div>
+        <div className="w-full flex-shrink-0">{activeIndex === 2 && <PlayerDetailGallery />}</div>
       </div>
     </BottomSheet>
   );
