@@ -10,7 +10,7 @@ interface PlayerProfileImgProps {
 const PlayerProfileImg = ({ player }: PlayerProfileImgProps) => {
   return (
     <div
-      className="fixed inset-x-0 top-0 bg-chelsea"
+      className="bg-chelsea"
       style={{
         backgroundImage: `url(${backgroundPattern})`,
         backgroundBlendMode: 'overlay',
