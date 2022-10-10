@@ -1,17 +1,21 @@
+import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import { chelseaColor } from '../../utils/common/variables';
+
 import { useWindowSize } from '../../utils/hooks';
 import { Player } from '../../utils/type/player';
 import PlayerSeperatedName from '../common/PlayerSeperatedName';
 import SpaceY from '../common/SpaceY';
 import { NAVBAR_HEIGHT } from '../layout/Layout';
 import PlayerDetailAbout from './PlayerDetailAbout';
+import PlayerDetailTabMenu from './PlayerDetailTabMenu';
 
 interface PlayerDetailBottomSheetProps {
   player: Player;
 }
 const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
   const { width } = useWindowSize();
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <BottomSheet
@@ -27,27 +31,20 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
         <div className="text-24px font-bold text-chelsea">No.{player.backNumber}</div>
       </div>
       <SpaceY height="16px" />
-      <div className="grid grid-cols-3 text-center font-bold">
-        {['About', 'Comment', 'Gallery'].map((tab, i) => {
-          const isActive = i === 0;
-          return (
-            <div
-              key={tab}
-              className="cursor-pointer border-2 border-transparent py-12px"
-              style={{
-                borderTop: '2px solid transparent',
-                borderBottom: isActive ? `2px solid ${chelseaColor}` : '2px solid #eee',
-              }}
-            >
-              {tab}
-            </div>
-          );
-        })}
-      </div>
-      <div className="grid grid-cols-3" style={{ width: '300%' }}>
-        <div className="w-full">
-          <PlayerDetailAbout player={player} />
+      <PlayerDetailTabMenu
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        onScroll={() => {}}
+      />
+      <div
+        className="grid grid-cols-3 duration-300"
+        style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
+      >
+        <div className="w-full flex-shrink-0">
+          {activeIndex === 0 && <PlayerDetailAbout player={player} />}
         </div>
+        <div className="w-full flex-shrink-0">{activeIndex === 1 && <div>PlayerComment</div>}</div>
+        <div className="w-full flex-shrink-0">{activeIndex === 2 && <div>PlayerGallery</div>}</div>
       </div>
     </BottomSheet>
   );
