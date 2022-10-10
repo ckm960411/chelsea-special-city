@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import { useWindowSize } from '../../utils/hooks';
@@ -11,6 +11,8 @@ import PlayerDetailComments from './PlayerDetailComments';
 import PlayerDetailGallery from './PlayerDetailGallery';
 import PlayerDetailTabMenu from './PlayerDetailTabMenu';
 
+const TOUCH_SLIDE_PIXEL = 50;
+
 interface PlayerDetailBottomSheetProps {
   player: Player;
 }
@@ -18,6 +20,36 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
   const { width } = useWindowSize();
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [startX, setStartX] = useState(0);
+  const [endX, setEndX] = useState(0);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    // 터치 시작시 터치한 좌표 기억
+    setStartX(e.touches[0].clientX);
+    setEndX(0);
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    // 터치 종료시 좌표 기억
+    setEndX(e.changedTouches[0].clientX);
+  };
+
+  const tabs = [
+    <PlayerDetailAbout player={player} />,
+    <PlayerDetailComments />,
+    <PlayerDetailGallery />,
+  ];
+
+  // 터치 시작좌표와 종료좌표가 있을 때 터치한 방향으로 슬라이드 전환
+  useEffect(() => {
+    if (startX === 0 || endX === 0) return;
+    if (startX > endX + TOUCH_SLIDE_PIXEL) {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % tabs.length);
+    } else if (endX > startX + TOUCH_SLIDE_PIXEL) {
+      setActiveIndex((prevIndex) => (prevIndex - 1) % tabs.length);
+    }
+    setStartX(0); // 슬라이드 전환시 기억한 좌표 지움
+    setEndX(0);
+  }, [startX, endX, tabs.length]);
 
   return (
     <BottomSheet
@@ -39,14 +71,19 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
         onScroll={() => {}}
       />
       <div
-        className="grid grid-cols-3 duration-300"
+        className="grid flex-grow grid-cols-3 duration-300"
         style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
       >
-        <div className="w-full flex-shrink-0">
-          {activeIndex === 0 && <PlayerDetailAbout player={player} />}
-        </div>
-        <div className="w-full flex-shrink-0">{activeIndex === 1 && <PlayerDetailComments />}</div>
-        <div className="w-full flex-shrink-0">{activeIndex === 2 && <PlayerDetailGallery />}</div>
+        {tabs.map((comp, i) => (
+          <div
+            key={i}
+            className="w-full flex-shrink-0"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            {activeIndex === i && comp}
+          </div>
+        ))}
       </div>
     </BottomSheet>
   );

@@ -18,7 +18,7 @@
     "no-empty-pattern": "warn",
     "no-undef": "error",
     "no-redeclare": "warn",
-    "react/jsx-key": "error",
+    "react/jsx-key": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/prefer-as-const": "warn",
     "@typescript-eslint/no-empty-function": "off",

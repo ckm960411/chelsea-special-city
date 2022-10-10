@@ -21,6 +21,8 @@ const PlayerDetailAbout = ({ player }: PlayerDetailAboutProps) => {
       />
       <hr className="my-12px border-white" />
       <PlayerInfoField fieldName="Height" fieldValue={`${player.height.toLocaleString()}cm`} />
+
+      <SpaceY height="600px" />
     </div>
   );
 };
