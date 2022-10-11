@@ -8,12 +8,14 @@ import { useRecoilValue } from 'recoil';
 import { meState } from '../../store';
 import CommentMenu from './CommentMenu';
 import ReactTextareaAutosize from 'react-textarea-autosize';
+import { updatePlayerComment } from '../../api/players';
 
 interface PlayerCommentProps {
   comment: PlayerComment;
+  onEditSuccess: (comment: PlayerComment) => void;
 }
-const PlayerCommentCard = ({ comment }: PlayerCommentProps) => {
-  const { user, content, createdAt } = comment;
+const PlayerCommentCard = ({ comment, onEditSuccess }: PlayerCommentProps) => {
+  const { id, user, content, createdAt } = comment;
   const me = useRecoilValue(meState) as any;
 
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -23,6 +25,22 @@ const PlayerCommentCard = ({ comment }: PlayerCommentProps) => {
   const isMyComment = useMemo(() => {
     return me?.id === user.id;
   }, [me?.id, user.id]);
+
+  const handleEditComment = () => {
+    const trimed = editComment.trim();
+    if (trimed === '' || trimed === content) {
+      setIsEditing(false);
+      setEditComment(content);
+    } else {
+      updatePlayerComment(id, trimed)
+        .then((res) => {
+          const edited = res.data;
+          onEditSuccess(edited);
+          setIsEditing(false);
+        })
+        .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+    }
+  };
 
   const menuRef = useClickOutside(() => setIsMenuOpened(false), isMenuOpened);
 
@@ -57,10 +75,7 @@ const PlayerCommentCard = ({ comment }: PlayerCommentProps) => {
               Cancel
             </button>
             <button
-              onClick={() => {
-                console.log('editComment: ', editComment);
-                setIsEditing(false);
-              }}
+              onClick={handleEditComment}
               className="rounded-sm border border-chelsea bg-chelsea px-8px py-4px text-white"
             >
               Send

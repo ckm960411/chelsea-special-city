@@ -23,7 +23,7 @@ const PlayerDetailComments = () => {
       <PlayerCommentForm
         onSuccess={(comment: PlayerComment) => setComments((prev) => [comment, ...prev])}
       />
-      <PlayerComments comments={comments} />
+      <PlayerComments comments={comments} setComments={setComments} />
     </div>
   );
 };
