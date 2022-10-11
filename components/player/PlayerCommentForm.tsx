@@ -1,8 +1,33 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
+import { useRecoilValue } from 'recoil';
+import { createPlayerComment } from '../../api/players';
+import { meState } from '../../store';
+import { PlayerComment } from '../../utils/type/player';
 
-const PlayerCommentForm = () => {
+interface PlayerCommentFormProps {
+  onSuccess: (comment: PlayerComment) => void;
+}
+const PlayerCommentForm = ({ onSuccess }: PlayerCommentFormProps) => {
+  const router = useRouter();
+  const { id: playerName } = router.query;
+
   const [comment, setComment] = useState('');
+
+  const me = useRecoilValue(meState) as any;
+
+  const sendComment = () => {
+    if (!me) return;
+    const trimed = comment.trim();
+    if (trimed === '') return;
+    createPlayerComment(playerName as string, trimed)
+      .then((res) => {
+        setComment('');
+        onSuccess(res.data);
+      })
+      .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+  };
 
   return (
     <div className="h-full p-16px">
@@ -23,7 +48,7 @@ const PlayerCommentForm = () => {
           Cancel
         </button>
         <button
-          onClick={() => alert(`comment: ${comment}`)}
+          onClick={sendComment}
           className="rounded-sm border border-chelsea bg-chelsea px-8px py-4px text-white"
         >
           Send

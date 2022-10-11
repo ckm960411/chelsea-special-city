@@ -28,3 +28,7 @@ export const getPlayer = (name: string) => {
 export const getPlayerComments = (name: string) => {
   return get(`comments/${name}`);
 };
+
+export const createPlayerComment = (name: string, content: string) => {
+  return post(`comments/${name}`, { content });
+};
