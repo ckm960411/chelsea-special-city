@@ -3,18 +3,19 @@ import { Dispatch, SetStateAction } from 'react';
 interface CommentMenuProps {
   isMyComment: boolean;
   setIsMenuOpened: Dispatch<SetStateAction<boolean>>;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
 }
-const CommentMenu = ({ isMyComment, setIsMenuOpened }: CommentMenuProps) => {
+const CommentMenu = ({ isMyComment, setIsMenuOpened, setIsEditing }: CommentMenuProps) => {
   const closeMenu = () => setIsMenuOpened(false);
 
   return (
-    <div className="w-100px rounded-sm border">
+    <div className="w-100px rounded-sm border bg-white">
       {isMyComment ? (
         <div>
           <CommentMenuItem
             content="Edit"
             onClick={() => {
-              console.log('edit');
+              setIsEditing(true);
               closeMenu();
             }}
           />
