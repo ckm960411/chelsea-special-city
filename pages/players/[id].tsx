@@ -4,11 +4,13 @@ import { getPlayer } from '../../api/players';
 import Layout from '../../components/layout/Layout';
 import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomSheet';
 import PlayerProfileImg from '../../components/player/PlayerProfileImg';
+import { useBreakpoint } from '../../utils/hooks';
 import { Player } from '../../utils/type/player';
 
 const PlayerDetailPage = () => {
   const router = useRouter();
   const { id: playerName } = router.query;
+  const isMobile = useBreakpoint();
 
   const [player, setPlayer] = useState<Player | null>(null);
 
@@ -27,7 +29,7 @@ const PlayerDetailPage = () => {
   return (
     <div className="bg-white">
       <PlayerProfileImg player={player} />
-      <PlayerDetailBottomSheet player={player} />
+      {isMobile ? <PlayerDetailBottomSheet player={player} /> : <div></div>}
     </div>
   );
 };
