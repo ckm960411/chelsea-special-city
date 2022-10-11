@@ -6,9 +6,9 @@ interface PlayerCommentsProps {
 }
 const PlayerComments = ({ comments }: PlayerCommentsProps) => {
   return (
-    <div className="flex flex-col gap-16px px-16px">
+    <div className="flex flex-col gap-16px px-16px pb-16px">
       {comments.map((comment) => (
-        <PlayerCommentCard comment={comment} />
+        <PlayerCommentCard key={comment.id} comment={comment} />
       ))}
     </div>
   );
