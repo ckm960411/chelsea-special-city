@@ -1,5 +1,5 @@
 import { forEach } from 'lodash';
-import { get, post } from '../axios';
+import { get, patch, post } from '../axios';
 import { RegisterPlayerDto } from './dto/register-player.dto';
 
 export const uploadPlayerPhoto = (files: FileList) => {
@@ -31,4 +31,8 @@ export const getPlayerComments = (name: string) => {
 
 export const createPlayerComment = (name: string, content: string) => {
   return post(`comments/${name}`, { content });
+};
+
+export const updatePlayerComment = (commentId: number, content: string) => {
+  return patch(`comments/${commentId}`, { content });
 };
