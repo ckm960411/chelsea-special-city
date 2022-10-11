@@ -2,10 +2,8 @@ import { format } from 'date-fns';
 import { anonymousImg } from '../../utils/common/variables';
 import { PlayerComment } from '../../utils/type/player';
 import EllipsisVerticalIcon from '@heroicons/react/20/solid/EllipsisVerticalIcon';
-import { LegacyRef, useMemo, useState } from 'react';
+import { LegacyRef, useState } from 'react';
 import { useClickOutside } from '../../utils/hooks';
-import { useRecoilValue } from 'recoil';
-import { meState } from '../../store';
 import CommentMenu from './CommentMenu';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { updatePlayerComment } from '../../api/players';
@@ -13,18 +11,14 @@ import { updatePlayerComment } from '../../api/players';
 interface PlayerCommentProps {
   comment: PlayerComment;
   onEditSuccess: (comment: PlayerComment) => void;
+  onDeleteSuccess: (commentId: number) => void;
 }
-const PlayerCommentCard = ({ comment, onEditSuccess }: PlayerCommentProps) => {
+const PlayerCommentCard = ({ comment, onEditSuccess, onDeleteSuccess }: PlayerCommentProps) => {
   const { id, user, content, createdAt } = comment;
-  const me = useRecoilValue(meState) as any;
 
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editComment, setEditComment] = useState(content);
-
-  const isMyComment = useMemo(() => {
-    return me?.id === user.id;
-  }, [me?.id, user.id]);
 
   const handleEditComment = () => {
     const trimed = editComment.trim();
@@ -98,9 +92,10 @@ const PlayerCommentCard = ({ comment, onEditSuccess }: PlayerCommentProps) => {
             {isMenuOpened && (
               <div ref={menuRef as LegacyRef<HTMLDivElement>} className="absolute top-0 right-28px">
                 <CommentMenu
-                  isMyComment={isMyComment}
+                  comment={comment}
                   setIsMenuOpened={setIsMenuOpened}
                   setIsEditing={setIsEditing}
+                  onDeleteSuccess={onDeleteSuccess}
                 />
               </div>
             )}

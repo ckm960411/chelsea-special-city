@@ -16,6 +16,12 @@ const PlayerComments = ({ comments, setComments }: PlayerCommentsProps) => {
           onEditSuccess={(comment) => {
             setComments((prev) => [...prev.slice(0, i), comment, ...prev.slice(i + 1)]);
           }}
+          onDeleteSuccess={(commentId) => {
+            setComments((prev) => {
+              const filtered = [...prev].filter((comment) => comment.id !== commentId);
+              return filtered;
+            });
+          }}
         />
       ))}
     </div>
