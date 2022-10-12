@@ -4,11 +4,17 @@ import { useBreakpoint } from '../../utils/hooks';
 interface PlayerDetailTabMenuProps {
   activeIndex: number;
   setActiveIndex: Dispatch<SetStateAction<number>>;
+  handleScroll?: () => void;
 }
-const PlayerDetailTabMenu = ({ activeIndex, setActiveIndex }: PlayerDetailTabMenuProps) => {
+const PlayerDetailTabMenu = ({
+  activeIndex,
+  setActiveIndex,
+  handleScroll,
+}: PlayerDetailTabMenuProps) => {
   const isMobile = useBreakpoint();
 
   const handleClick = (index: number) => () => {
+    handleScroll?.();
     setActiveIndex(index);
   };
 
