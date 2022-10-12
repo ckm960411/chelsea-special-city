@@ -1,5 +1,5 @@
 interface SpaceYProps {
-  height: string;
+  height: string | number;
 }
 const SpaceY = ({ height }: SpaceYProps) => {
   return <div className="w-full" style={{ height }} />;

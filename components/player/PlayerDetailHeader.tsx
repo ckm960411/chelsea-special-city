@@ -29,7 +29,9 @@ const PlayerDetailHeader = ({ player }: PlayerDetailHeaderProps) => {
           className="relative z-10 mx-auto max-w-440px sm:mx-0"
           style={{ width: '80%' }}
         />
-        {isMobile || (
+        {isMobile ? (
+          <></>
+        ) : (
           <div className="absolute right-0 top-60px pr-20px text-right text-white">
             <p className="font-permanent font-bold" style={{ fontSize: 80, lineHeight: 1.2 }}>
               {player.backNumber}
