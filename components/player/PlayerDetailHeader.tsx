@@ -5,10 +5,10 @@ import { NAVBAR_HEIGHT } from '../layout/Layout';
 
 const backgroundPattern = `${imagekitUrlEnpoint}/background-pattern_0X99xdGqg.png`;
 
-interface PlayerProfileImgProps {
+interface PlayerDetailHeaderProps {
   player: Player;
 }
-const PlayerProfileImg = ({ player }: PlayerProfileImgProps) => {
+const PlayerDetailHeader = ({ player }: PlayerDetailHeaderProps) => {
   const isMobile = useBreakpoint();
 
   const [firstName, lastName] = player.name.split(' ');
@@ -55,4 +55,4 @@ const PlayerProfileImg = ({ player }: PlayerProfileImgProps) => {
   );
 };
 
-export default PlayerProfileImg;
+export default PlayerDetailHeader;

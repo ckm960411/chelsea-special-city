@@ -4,7 +4,7 @@ import { getPlayer } from '../../api/players';
 import Layout from '../../components/layout/Layout';
 import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomSheet';
 import PlayerDetailTabs from '../../components/player/PlayerDetailTabs';
-import PlayerProfileImg from '../../components/player/PlayerProfileImg';
+import PlayerDetailHeader from '../../components/player/PlayerDetailHeader';
 import { useBreakpoint } from '../../utils/hooks';
 import { Player } from '../../utils/type/player';
 
@@ -29,7 +29,7 @@ const PlayerDetailPage = () => {
 
   return (
     <div className="bg-white">
-      <PlayerProfileImg player={player} />
+      <PlayerDetailHeader player={player} />
       {isMobile ? (
         <PlayerDetailBottomSheet player={player} />
       ) : (
