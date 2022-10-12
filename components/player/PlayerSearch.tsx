@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import SearchIcon from '@heroicons/react/20/solid/MagnifyingGlassIcon';
 import SpaceY from '../common/SpaceY';
 import CloseIcon from '@heroicons/react/20/solid/XMarkIcon';
-import React, { useState } from 'react';
 import { searchPlayers } from '../../api/players';
 import { Player } from '../../utils/type/player';
 
@@ -22,12 +22,19 @@ const PlayerSearch = () => {
     if (trimed === '') return;
     searchPlayers(trimed)
       .then((res) => {
-        if (!res?.data?.success) return;
+        if (!res?.data?.success) return setSearchedPlayers(null);
         const { data } = res.data;
         setSearchedPlayers(data);
       })
-      .catch(console.error);
+      .catch(() => setSearchedPlayers(null));
   };
+
+  useEffect(() => {
+    if (!isPopupOpened) {
+      setSearchedPlayers(null);
+      setQuery('');
+    }
+  }, [isPopupOpened]);
 
   return (
     <div
@@ -48,7 +55,9 @@ const PlayerSearch = () => {
                 <CloseIcon className="w-24px" />
               </button>
               <h2 className="text-18px font-bold text-gray-800">Search Player</h2>
+
               <SpaceY height="16px" />
+
               <form className="relative" onSubmit={handleSubmit}>
                 <input
                   value={query}
@@ -63,6 +72,24 @@ const PlayerSearch = () => {
                   <SearchIcon className="w-20px" />
                 </button>
               </form>
+
+              <SpaceY height="16px" />
+
+              {searchedPlayers && (
+                <div className="flex flex-col gap-8px overflow-y-auto" style={{ maxHeight: 300 }}>
+                  {searchedPlayers.map((player) => (
+                    <div key={player.id} className="flex items-center gap-4px">
+                      <div className="h-60px w-60px flex-shrink-0 overflow-hidden rounded-full">
+                        <img src={player.profileImg} alt={player.name} />
+                      </div>
+                      <div className="flex flex-grow flex-col gap-5px">
+                        <p className="text-16px font-semibold text-chelsea">{player.name}</p>
+                        <p className="text-15px font-medium text-gray-700">{player.position}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
