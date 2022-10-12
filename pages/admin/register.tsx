@@ -68,7 +68,7 @@ const RegisterPlayerPage = () => {
     <div className="mx-auto max-w-md px-16px">
       <SpaceY height="16px" />
       <div className="flex flex-col gap-16px">
-        <PlayerSearch />
+        <PlayerSearch setRegisterForm={setRegisterForm} />
         <PlayerPhotoField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerNameField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerBackNumberField registerForm={registerForm} setRegisterForm={setRegisterForm} />
