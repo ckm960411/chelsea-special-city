@@ -17,6 +17,7 @@ import PlayerBirthPlaceField from '../../components/register/PlayerBirthPlaceFie
 import PlayerBirthDateField from '../../components/register/PlayerBirthDateField';
 import PlayerHeightField from '../../components/register/PlayerHeightField';
 import { registerPlayer } from '../../api/players';
+import PlayerSearch from '../../components/player/PlayerSearch';
 
 const initialRegisterForm = {
   profileImg: '',
@@ -67,6 +68,7 @@ const RegisterPlayerPage = () => {
     <div className="mx-auto max-w-md px-16px">
       <SpaceY height="16px" />
       <div className="flex flex-col gap-16px">
+        <PlayerSearch />
         <PlayerPhotoField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerNameField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerBackNumberField registerForm={registerForm} setRegisterForm={setRegisterForm} />
