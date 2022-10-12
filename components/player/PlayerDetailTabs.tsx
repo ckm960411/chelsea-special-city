@@ -36,15 +36,17 @@ const PlayerDetailTabs = ({ player, handleScroll }: PlayerDetailTabsProps) => {
           />
         </div>
       </div>
-      <div
-        className="grid grid-cols-3 duration-300"
-        style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
-      >
-        {tabs.map((tab, i) => (
-          <div key={i} className="w-full flex-shrink-0" style={{ minHeight: height }}>
-            {activeIndex === i && tab}
-          </div>
-        ))}
+      <div className="max-w-1024">
+        <div
+          className="grid grid-cols-3 duration-300"
+          style={{ width: '300%', transform: `translateX(-${(activeIndex * 100) / 3}%)` }}
+        >
+          {tabs.map((tab, i) => (
+            <div key={i} className="w-full flex-shrink-0" style={{ minHeight: height }}>
+              {activeIndex === i && tab}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
