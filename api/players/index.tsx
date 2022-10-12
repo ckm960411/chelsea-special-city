@@ -40,3 +40,7 @@ export const updatePlayerComment = (commentId: number, content: string) => {
 export const deletePlayerComment = (commentId: number) => {
   return deleteCall(`comments/${commentId}`);
 };
+
+export const searchPlayers = (query: string) => {
+  return get(`players/search/${query}`);
+};
