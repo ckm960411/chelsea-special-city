@@ -4,11 +4,14 @@ import SpaceY from '../common/SpaceY';
 import CloseIcon from '@heroicons/react/20/solid/XMarkIcon';
 import { searchPlayers } from '../../api/players';
 import { Player } from '../../utils/type/player';
+import { usePreventBodyScroll } from '../../utils/hooks';
 
 const PlayerSearch = () => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [query, setQuery] = useState('');
   const [searchedPlayers, setSearchedPlayers] = useState<Player[] | null>(null);
+
+  usePreventBodyScroll(isPopupOpened);
 
   const handleOpenPopup = () => setIsPopupOpened(true);
   const handleClosePopup: React.MouseEventHandler = (e) => {
