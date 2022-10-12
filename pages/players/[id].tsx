@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getPlayer } from '../../api/players';
 import Layout from '../../components/layout/Layout';
 import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomSheet';
+import PlayerDetailTabs from '../../components/player/PlayerDetailTabs';
 import PlayerProfileImg from '../../components/player/PlayerProfileImg';
 import { useBreakpoint } from '../../utils/hooks';
 import { Player } from '../../utils/type/player';
@@ -29,7 +30,11 @@ const PlayerDetailPage = () => {
   return (
     <div className="bg-white">
       <PlayerProfileImg player={player} />
-      {isMobile ? <PlayerDetailBottomSheet player={player} /> : <div></div>}
+      {isMobile ? (
+        <PlayerDetailBottomSheet player={player} />
+      ) : (
+        <PlayerDetailTabs player={player} />
+      )}
     </div>
   );
 };
