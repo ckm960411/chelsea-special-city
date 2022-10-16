@@ -1,14 +1,17 @@
+import { omit } from 'lodash';
 import { useBreakpoint } from '../../utils/hooks';
 import { imagekitUrlEnpoint } from '../../utils/imagekit';
-import { Player } from '../../utils/type/player';
+import { Player, Stats } from '../../utils/type/player';
+import SpaceY from '../common/SpaceY';
 import { NAVBAR_HEIGHT } from '../layout/Layout';
 
 const backgroundPattern = `${imagekitUrlEnpoint}/background-pattern_0X99xdGqg.png`;
 
 interface PlayerDetailHeaderProps {
   player: Player;
+  stats: Stats;
 }
-const PlayerDetailHeader = ({ player }: PlayerDetailHeaderProps) => {
+const PlayerDetailHeader = ({ player, stats }: PlayerDetailHeaderProps) => {
   const isMobile = useBreakpoint();
 
   const [firstName, lastName] = player.name.split(' ');
@@ -32,25 +35,55 @@ const PlayerDetailHeader = ({ player }: PlayerDetailHeaderProps) => {
         {isMobile ? (
           <></>
         ) : (
-          <div className="absolute right-0 top-60px pr-20px text-right text-white">
-            <p className="font-permanent font-bold" style={{ fontSize: 80, lineHeight: 1.2 }}>
-              {player.backNumber}
-            </p>
-            {lastName ? (
-              <>
-                <p className="font-permanent font-bold" style={{ fontSize: 60, lineHeight: 1 }}>
+          <>
+            <div className="absolute right-20px top-60px text-right text-white">
+              <p className="font-permanent font-bold" style={{ fontSize: 80, lineHeight: 1.2 }}>
+                {player.backNumber}
+              </p>
+              {lastName ? (
+                <>
+                  <p className="font-permanent font-bold" style={{ fontSize: 60, lineHeight: 1 }}>
+                    {firstName}
+                  </p>
+                  <p className="font-permanent font-bold" style={{ fontSize: 100, lineHeight: 1 }}>
+                    {lastName}
+                  </p>
+                </>
+              ) : (
+                <p className="font-permanent font-bold" style={{ fontSize: 100, lineHeight: 1 }}>
                   {firstName}
                 </p>
-                <p className="font-permanent font-bold" style={{ fontSize: 100, lineHeight: 1 }}>
-                  {lastName}
-                </p>
-              </>
-            ) : (
-              <p className="font-permanent font-bold" style={{ fontSize: 100, lineHeight: 1 }}>
-                {firstName}
-              </p>
-            )}
-          </div>
+              )}
+            </div>
+            <div
+              className="absolute right-20px bottom-60px w-300px text-white"
+              style={{ zIndex: 10 }}
+            >
+              <h4 className="text-20px font-semibold">Season Stats</h4>
+              <SpaceY height="16px" />
+              <hr className="border-white" />
+              <SpaceY height="16px" />
+              <div className="flex flex-col gap-12px">
+                {player.position === 'GOALKEEPER'
+                  ? Object.keys(omit(stats, ['id', 'goals'])).map((key: string, i) => (
+                      <div key={i} className="flex items-center justify-between">
+                        <div className="text-18px font-semibold">{key}</div>
+                        <div className="text-18px font-semibold text-chelseaYellow">
+                          {stats[key]}
+                        </div>
+                      </div>
+                    ))
+                  : Object.keys(omit(stats, ['id', 'cleanSheets'])).map((key: string, i) => (
+                      <div key={i} className="flex items-center justify-between">
+                        <div className="text-18px font-semibold">{key}</div>
+                        <div className="text-18px font-semibold text-chelseaYellow">
+                          {stats[key]}
+                        </div>
+                      </div>
+                    ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

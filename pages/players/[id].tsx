@@ -6,8 +6,9 @@ import PlayerDetailBottomSheet from '../../components/player/PlayerDetailBottomS
 import PlayerDetailTabs from '../../components/player/PlayerDetailTabs';
 import PlayerDetailHeader from '../../components/player/PlayerDetailHeader';
 import { useBreakpoint } from '../../utils/hooks';
-import { Player } from '../../utils/type/player';
+import { Player, Stats } from '../../utils/type/player';
 import { scrollToSection } from '../../utils/common';
+import { getPlayerStats } from '../../api/stats';
 
 const PlayerDetailPage = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const PlayerDetailPage = () => {
   const tabsRef = useRef<HTMLDivElement | null>(null);
 
   const [player, setPlayer] = useState<Player | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
@@ -37,15 +39,23 @@ const PlayerDetailPage = () => {
         .catch(() => {});
   }, [playerName]);
 
-  if (!player) return <div>Loading...</div>;
+  useEffect(() => {
+    if (player) {
+      getPlayerStats(player.id)
+        .then((res) => setStats(res.data))
+        .catch(() => {});
+    }
+  }, [player]);
+
+  if (!player || !stats) return <div>Loading...</div>;
 
   return (
     <div className="bg-white">
       <div ref={headerRef}>
-        <PlayerDetailHeader player={player} />
+        <PlayerDetailHeader player={player} stats={stats} />
       </div>
       {isMobile ? (
-        <PlayerDetailBottomSheet player={player} />
+        <PlayerDetailBottomSheet player={player} stats={stats} />
       ) : (
         <div ref={tabsRef}>
           <PlayerDetailTabs player={player} handleScroll={handleScroll} />

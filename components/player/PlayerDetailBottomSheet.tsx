@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import { useWindowSize } from '../../utils/hooks';
-import { Player } from '../../utils/type/player';
+import { Player, Stats } from '../../utils/type/player';
 import PlayerSeperatedName from '../common/PlayerSeperatedName';
 import SpaceY from '../common/SpaceY';
 import { NAVBAR_HEIGHT } from '../layout/Layout';
@@ -15,8 +15,9 @@ const TOUCH_SLIDE_PIXEL = 50;
 
 interface PlayerDetailBottomSheetProps {
   player: Player;
+  stats: Stats;
 }
-const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
+const PlayerDetailBottomSheet = ({ player, stats }: PlayerDetailBottomSheetProps) => {
   const { width, height } = useWindowSize();
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,7 +36,7 @@ const PlayerDetailBottomSheet = ({ player }: PlayerDetailBottomSheetProps) => {
   };
 
   const tabs = [
-    <PlayerDetailAbout player={player} />,
+    <PlayerDetailAbout player={player} stats={stats} />,
     <PlayerDetailComments />,
     <PlayerDetailGallery />,
   ];
