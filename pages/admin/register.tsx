@@ -37,22 +37,28 @@ const RegisterPlayerPage = () => {
   const token = useRecoilValue(tokenState);
 
   const [registerForm, setRegisterForm] = useState<RegisterForm>(initialRegisterForm);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSubmit = async () => {
     const { backNumber, position, ...rest } = registerForm;
-    if (backNumber && position) {
-      await registerPlayer({
-        backNumber,
-        position,
-        ...rest,
-      })
-        .then(() => {
-          alert('선수 등록이 완료됐습니다!');
-          setRegisterForm(initialRegisterForm);
-        })
-        .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+    if (isEditing) {
+      // UPDATE
     } else {
-      alert('빠진 입력란이 없는지 확인해주세요!');
+      // CREATE
+      if (backNumber && position) {
+        await registerPlayer({
+          backNumber,
+          position,
+          ...rest,
+        })
+          .then(() => {
+            alert('선수 등록이 완료됐습니다!');
+            setRegisterForm(initialRegisterForm);
+          })
+          .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+      } else {
+        alert('빠진 입력란이 없는지 확인해주세요!');
+      }
     }
   };
 
@@ -68,7 +74,7 @@ const RegisterPlayerPage = () => {
     <div className="mx-auto max-w-md px-16px">
       <SpaceY height="16px" />
       <div className="flex flex-col gap-16px">
-        <PlayerSearch setRegisterForm={setRegisterForm} />
+        <PlayerSearch setRegisterForm={setRegisterForm} setIsEditing={setIsEditing} />
         <PlayerPhotoField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerNameField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerBackNumberField registerForm={registerForm} setRegisterForm={setRegisterForm} />
@@ -84,7 +90,7 @@ const RegisterPlayerPage = () => {
         onClick={handleSubmit}
         className="w-full rounded-sm bg-chelsea py-12px text-18px font-bold text-white"
       >
-        REGISTER
+        {isEditing ? 'UPDATE' : 'REGISTER'}
       </button>
       <SpaceY height="80px" />
     </div>

@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import SearchIcon from '@heroicons/react/20/solid/MagnifyingGlassIcon';
-import SpaceY from '../common/SpaceY';
 import CloseIcon from '@heroicons/react/20/solid/XMarkIcon';
 import { searchPlayers } from '../../api/players';
 import { Player, RegisterForm } from '../../utils/type/player';
@@ -9,8 +8,9 @@ import { omit } from 'lodash';
 
 interface PlayerSearchProps {
   setRegisterForm: Dispatch<SetStateAction<RegisterForm>>;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
 }
-const PlayerSearch = ({ setRegisterForm }: PlayerSearchProps) => {
+const PlayerSearch = ({ setRegisterForm, setIsEditing }: PlayerSearchProps) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [query, setQuery] = useState('');
   const [searchedPlayers, setSearchedPlayers] = useState<Player[] | null>(null);
@@ -32,6 +32,7 @@ const PlayerSearch = ({ setRegisterForm }: PlayerSearchProps) => {
         if (!res?.data?.success) return setSearchedPlayers(null);
         const { data } = res.data;
         setSearchedPlayers(data);
+        setIsEditing(true);
       })
       .catch(() => setSearchedPlayers(null));
   };
