@@ -9,8 +9,9 @@ import { omit } from 'lodash';
 interface PlayerSearchProps {
   setRegisterForm: Dispatch<SetStateAction<RegisterForm>>;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  setPlayerId: Dispatch<SetStateAction<number>>;
 }
-const PlayerSearch = ({ setRegisterForm, setIsEditing }: PlayerSearchProps) => {
+const PlayerSearch = ({ setRegisterForm, setIsEditing, setPlayerId }: PlayerSearchProps) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [query, setQuery] = useState('');
   const [searchedPlayers, setSearchedPlayers] = useState<Player[] | null>(null);
@@ -39,6 +40,7 @@ const PlayerSearch = ({ setRegisterForm, setIsEditing }: PlayerSearchProps) => {
 
   const handleSelectSearchResult = (player: Player) => (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    setPlayerId(player.id);
     const withoutPlayerId = omit(player, ['id']);
     setIsPopupOpened(false);
     setRegisterForm(withoutPlayerId);

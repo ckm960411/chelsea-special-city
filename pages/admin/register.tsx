@@ -16,7 +16,7 @@ import PlayerNationalTeamField from '../../components/register/PlayerNationalTea
 import PlayerBirthPlaceField from '../../components/register/PlayerBirthPlaceField';
 import PlayerBirthDateField from '../../components/register/PlayerBirthDateField';
 import PlayerHeightField from '../../components/register/PlayerHeightField';
-import { registerPlayer } from '../../api/players';
+import { registerPlayer, updatePlayer } from '../../api/players';
 import PlayerSearch from '../../components/player/PlayerSearch';
 
 const initialRegisterForm = {
@@ -38,11 +38,24 @@ const RegisterPlayerPage = () => {
 
   const [registerForm, setRegisterForm] = useState<RegisterForm>(initialRegisterForm);
   const [isEditing, setIsEditing] = useState(false);
+  const [playerId, setPlayerId] = useState(0);
 
   const handleSubmit = async () => {
     const { backNumber, position, ...rest } = registerForm;
     if (isEditing) {
       // UPDATE
+      if (backNumber && position && playerId) {
+        updatePlayer(playerId, {
+          backNumber,
+          position,
+          ...rest,
+        })
+          .then(() => {
+            alert('선수 수정이 완료됐습니다!');
+            setRegisterForm(initialRegisterForm);
+          })
+          .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
+      }
     } else {
       // CREATE
       if (backNumber && position) {
@@ -70,11 +83,19 @@ const RegisterPlayerPage = () => {
     }
   }, [me, router, token]);
 
+  useEffect(() => {
+    if (!isEditing) setPlayerId(0);
+  }, [isEditing]);
+
   return (
     <div className="mx-auto max-w-md px-16px">
       <SpaceY height="16px" />
       <div className="flex flex-col gap-16px">
-        <PlayerSearch setRegisterForm={setRegisterForm} setIsEditing={setIsEditing} />
+        <PlayerSearch
+          setRegisterForm={setRegisterForm}
+          setIsEditing={setIsEditing}
+          setPlayerId={setPlayerId}
+        />
         <PlayerPhotoField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerNameField registerForm={registerForm} setRegisterForm={setRegisterForm} />
         <PlayerBackNumberField registerForm={registerForm} setRegisterForm={setRegisterForm} />
