@@ -53,6 +53,7 @@ const RegisterPlayerPage = () => {
           .then(() => {
             alert('선수 수정이 완료됐습니다!');
             setRegisterForm(initialRegisterForm);
+            setIsEditing(false);
           })
           .catch(() => alert('문제가 발생했습니다. 다시 시도해 주세요.'));
       }
