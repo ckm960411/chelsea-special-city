@@ -75,3 +75,12 @@ export interface PlayerComment {
   deletedAt: Date;
   user: User;
 }
+
+export interface Stats {
+  season: string;
+  appearances: number;
+  totalMinutesPlayed: number;
+  goals: number;
+  cleanSheets: number;
+  [key: string]: any;
+}
