@@ -1,6 +1,7 @@
 import { forEach } from 'lodash';
 import { deleteCall, get, patch, post } from '../axios';
 import { RegisterPlayerDto } from './dto/register-player.dto';
+import { UpdatePlayerDto } from './dto/update-player.dto';
 
 export const uploadPlayerPhoto = (files: FileList) => {
   const formFile = new FormData();
@@ -15,6 +16,10 @@ export const uploadPlayerPhoto = (files: FileList) => {
 
 export const registerPlayer = (data: RegisterPlayerDto) => {
   return post('players/create', data);
+};
+
+export const updatePlayer = (playerId: number, data: UpdatePlayerDto) => {
+  return patch(`players/${playerId}`, data);
 };
 
 export const getAllPlayers = () => {
